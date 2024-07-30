@@ -30,6 +30,6 @@ if [ ! -d "$HOME/$VIM_DIR" ]; then
 	mkdir -p "$HOME/$VIM_DIR"
 fi
 
-create_symlink "$DOTFILE_DIR/$VIMRC_FILE" "$HOME/$VIM_DIR/vimrc"
+create_symlink "$DOTFILES_DIR/$VIMRC_FILE" "$HOME/$VIM_DIR/vimrc"
 
 echo "Dotfiles Linked Successfully."
