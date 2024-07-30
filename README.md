@@ -1,5 +1,5 @@
 # Dotfiles
 
 Contains my configurations for:
-	- Bash
-	- Vim
+- Bash
+- Vim
