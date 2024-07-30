@@ -3,6 +3,7 @@
 DOTFILES_DIR=$(pwd)
 BASHRC_FILE=.bashrc
 VIMRC_FILE=.vimrc
+COLOURS_FILE=shell_colours.json
 VIM_DIR=.vim
 
 
@@ -31,5 +32,6 @@ if [ ! -d "$HOME/$VIM_DIR" ]; then
 fi
 
 create_symlink "$DOTFILES_DIR/$VIMRC_FILE" "$HOME/$VIM_DIR/vimrc"
+create_symlink "$DOTFILES_DIR/$COLOURS_FILE" "$HOME/$COLOURS_FILE"
 
 echo "Dotfiles Linked Successfully."
