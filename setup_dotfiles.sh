@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOTFILES_DIR=.
+DOTFILES_DIR=$(pwd)
 BASHRC_FILE=.bashrc
 VIMRC_FILE=.vimrc
 VIM_DIR=.vim
@@ -24,6 +24,12 @@ create_symlink()
 }
 
 create_symlink "$DOTFILES_DIR/$BASHRC_FILE" "$HOME/$BASHRC_FILE"
+
+if [ ! -d "$HOME/$VIM_DIR" ]; then
+	echo "Creating .vim directory"
+	mkdir -p "$HOME/$VIM_DIR"
+fi
+
 create_symlink "$DOTFILE_DIR/$VIMRC_FILE" "$HOME/$VIM_DIR/vimrc"
 
 echo "Dotfiles Linked Successfully."
