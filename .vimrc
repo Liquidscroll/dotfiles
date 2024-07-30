@@ -140,7 +140,8 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 set laststatus=2
 
 " Format the status line
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+"set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+set statusline=\ %{HasPaste()}%{TruncatePath(expand('%:p'))}%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 
 """""""""""""""
 " Editing Mappings
@@ -188,6 +189,17 @@ function! HasPaste()
     return ''
 endfunction
 
+" Truncate File Path
+function! TruncatePath(path)
+    let l:max_dirs = 3
+    let l:parts = split(a:path, '/')
+
+    if len(l:parts) > l:max_dirs
+        return '~/.../' . join(l:parts[-l:max_dirs:], '/')
+    else
+        return a:path
+    endif
+endfunction
 
 """""""""""""""
 " Files, backups and undo
