@@ -156,17 +156,17 @@ load_colors_from_json()
 	local json_file="/home/liquidscroll/shell_colours.json"
 	
 	if [[ -f "$json_file" ]]; then
-        BG_COLOR=$(jq -r '.bg_color' "$json_file")
-        FG_COLOR=$(jq -r '.fg_color' "$json_file")
-        BLACK=$(jq -r '.black' "$json_file")
-        RED=$(jq -r '.red' "$json_file")
-        GREEN=$(jq -r '.green' "$json_file")
-        YELLOW=$(jq -r '.yellow' "$json_file")
-        BLUE=$(jq -r '.blue' "$json_file")
-        MAGENTA=$(jq -r '.magenta' "$json_file")
-        CYAN=$(jq -r '.cyan' "$json_file")
-        WHITE=$(jq -r '.white' "$json_file")
-        RESET=$(jq -r '.reset' "$json_file")
+        BG_COLOR="\[$(jq -r '.bg_color' "$json_file")\]"
+        FG_COLOR="\[$(jq -r '.fg_color' "$json_file")\]"
+        BLACK="\[$(jq -r '.black' "$json_file")\]"
+        RED="\[$(jq -r '.red' "$json_file")\]"
+        GREEN="\[$(jq -r '.green' "$json_file")\]"
+        YELLOW="$(jq -r '.yellow' "$json_file")"
+        BLUE="\[$(jq -r '.blue' "$json_file")\]"
+        MAGENTA="\[$(jq -r '.magenta' "$json_file")\]"
+        CYAN="\[$(jq -r '.cyan' "$json_file")\]"
+        WHITE="\[$(jq -r '.white' "$json_file")\]"
+        RESET="$(jq -r '.reset' "$json_file")"
     else
         echo "JSON file with color definitions not found!"
     fi
@@ -192,9 +192,9 @@ if [ "$color_prompt" = yes ]; then
     PS1+="${RESET} ${BLUE}\w${RESET}"                   # Current working directory
 	PS1+='$(git_branch=$(get_git_branch); if [ -n "$git_branch" ]; then echo -e "\n${YELLOW}${GIT_SYMBOL} $git_branch${RESET}"; fi)' # Current git branch
 	if [ "$USER_ID" -eq 0 ]; then
-		PS1+="${GREEN}\n#${RESET} "
+		PS1+="${GREEN}\n#\[${RESET}\] "
 	else
-		PS1+="${GREEN}\n\$${RESET} "
+		PS1+="${GREEN}\n\$\[${RESET}\] "
 	fi
 else
     #PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
