@@ -171,8 +171,23 @@ load_colors_from_json()
         echo "JSON file with color definitions not found!"
     fi
 }
+if command -v jq >/dev/null 2>&1; then
+    load_colors_from_json    
+else
+    # If jq not installed set default colour scheme
+    BG_COLOR="\[\e[48;5;234m\]"
+    FG_COLOR="\[\e[38;5;231m\]"
+    BLACK="\[\e[38;5;16m\]"
+    RED="\[\e[38;5;197m\]"
+    GREEN="\[\e[38;5;154m\]"
+    YELLOW="\e[38;5;220m"
+    BLUE="\[\e[38;5;81m\]"
+    MAGENTA="\[\e[38;5;141m\]"
+    CYAN="\[\e[38;5;115m\]"
+    WHITE="\[\e[38;5;231m\]"
+    RESET="\e[0m"
+fi
 
-load_colors_from_json
 
 GIT_SYMBOL=$'\ue725' # nerd font symbol for GIT
 USER_ID=$(id -u) # check for root
