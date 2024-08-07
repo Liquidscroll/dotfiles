@@ -8,6 +8,7 @@ function Is-Admin
 
     return $windPrinc.IsInRole($adminRole)
 }
+
 function Get-GitBranch
 {
     if(git rev-parse --is-inside-work-tree 2>$null)
@@ -29,7 +30,8 @@ function prompt
     if(Test-Path $coloursFilePath)
     {
         $colorSettings = Get-Content $coloursFilePath | ConvertFrom-Json
-        
+       
+        # Convert escape characters to windows version
         foreach ($key in $colorSettings.PSObject.Properties)
         {
             $key.Value = $key.Value.Replace("\e", "`e")
@@ -37,7 +39,7 @@ function prompt
     }
     else
     {
-        #define colours if json file doesn't exist
+        # Define colours if json file doesn't exist
         $colorSettings = @{
             "bg_color" = "`e[48;5;234m"
             "fg_color"= "`e[38;5;231m"
@@ -54,13 +56,21 @@ function prompt
     }
 
     $user = [Environment]::UserName
+    
+    # Get current path, then replace home path (C:\Users\user) with ~
     $path = Get-Location
+    $homePath = [Environment]::GetFolderPath("UserProfile")
+    $path = $path -replace [regex]::Escape($homePath), "~"
+
+    # Check for git branch and define git symbol
+    # Requires Nerd Font
     $gitBranch = Get-GitBranch
     $gitSymbol = "`u{e725}"
 
     $promptString  = "$($colorSettings.white)@$user "
     $promptString += "$($colorSettings.blue)$path`n"
     $promptLineCount += 1
+
     if($gitBranch) 
     { 
         $promptString += "$($colorSettings.yellow)$gitSymbol $gitBranch`n" 
@@ -89,4 +99,3 @@ function prompt
     Write-Host -NoNewline $promptString
     return " "
 }
-
