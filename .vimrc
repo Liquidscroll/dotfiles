@@ -1,6 +1,10 @@
 """""""""""""""
 " General
 """""""""""""""
+" Check if we're on Windows, if so set shellslash
+if has('win32') || has('win64')
+    set shellslash
+endif
 
 " Set history length
 set history=500
