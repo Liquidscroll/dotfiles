@@ -1,3 +1,8 @@
+function GoTo-Obsidian
+{
+    cd $env:ObsidianNotes
+}
+
 function Is-Admin
 {
     $winID = [System.Security.Principal.WindowsIdentity]::GetCurrent()
