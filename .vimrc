@@ -103,6 +103,11 @@ set ffs=unix,dos,mac
 " Text, Tab and Indent related
 """""""""""""""
 
+" Setup Clang Complete
+if exists('$LIB_CLANG_PATH')
+    let g:clang_library_path=expand('$LIB_CLANG_PATH')
+endif
+
 " Use spaces instead of tabs
 set expandtab
 
