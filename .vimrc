@@ -2,9 +2,9 @@
 " General
 """""""""""""""
 " Check if we're on Windows, if so set shellslash
-if has('win32') || has('win64')
-    set shellslash
-endif
+"if has('win32') || has('win64')
+"    set shellslash
+"endif
 
 " Set history length
 set history=500
@@ -103,11 +103,6 @@ set ffs=unix,dos,mac
 " Text, Tab and Indent related
 """""""""""""""
 
-" Setup Clang Complete
-if exists('$LIB_CLANG_PATH')
-    let g:clang_library_path=expand('$LIB_CLANG_PATH')
-endif
-
 " Use spaces instead of tabs
 set expandtab
 
@@ -150,7 +145,10 @@ set laststatus=2
 
 " Format the status line
 "set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+"set statusline=\ %{HasPaste()}%{TruncatePath(expand('%:p'))}%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 set statusline=\ %{HasPaste()}%{TruncatePath(expand('%:p'))}%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+set statusline+=%= 
+set statusline+=\{…\}%3{codeium#GetStatusString()}
 
 """""""""""""""
 " Editing Mappings
@@ -185,6 +183,15 @@ noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " Toggle paste mode with ',pp'
 map <leader>pp :setlocal paste!<cr>
+
+" Turn Off Codeium Bindings 
+let g:codeium_disable_bindings = 1
+"Attemp shift-tab remap
+imap <script><silent><nowait><expr> <C-g> codeium#Accept()
+imap <C-;> <Cmd> call codeium#CycleCompletions(1)<CR>
+imap <C-.> <Cmd> call codeium#CycleCompletions(-1)<CR>
+imap <C-x> <Cmd> call codeium#Clear()<CR>
+imap <C-`> <Cmd> call codeium#Complete()<CR> 
 
 """""""""""""""
 " Helper Funcs

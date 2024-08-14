@@ -1,3 +1,6 @@
 [submodule "plugins/clang_complete"]
 	path = plugins/clang_complete
 	url = https://github.com/xavierd/clang_complete.git
+[submodule "plugins/codeium.vim"]
+	path = plugins/codeium.vim
+	url = https://github.com/Exafunction/codeium.vim

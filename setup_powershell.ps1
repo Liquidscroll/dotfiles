@@ -1,10 +1,12 @@
 $vimrcPath = "$PSScriptRoot/.vimrc"
 $psPromptPath = "$PSScriptRoot/profile.ps1"
+$codeiumPath = "$PSScriptRoot/plugins/codeium.vim"
 $clangCompletePath = "$PSScriptRoot/plugins/clang_complete"
 
 $targetVimrcPath = "$HOME/_vimrc"
 $targetPsPromptPath = "$HOME/Documents/PowerShell/Profile.ps1"
-$targetClangCompletePath = "$HOME/.vim/pack/completion/start/clang_complete"
+$targetCodeiumPath = "$HOME/vimfiles/pack/Exafunction/start/codeium.vim"
+$targetClangCompletePath = "$HOME/vimfiles/pack/completion/start/clang_complete"
 
 if (-Not (Test-Path $targetVimrcPath -PathType Leaf))
 {
@@ -26,37 +28,30 @@ else
     Write-Output "Symbolic link already exists at $targetPsPromptPath"
 }
 
-$clangVersion = clang --version
-if($clangVersion)
+if (-Not (Test-Path $targetCodeiumPath -PathType Any))
 {
-    $libClangPath = gci -Recurse -Filter "libclang.dll" "C:\Program Files\LLVM" | Select-Object -First 1 -ExpandProperty FullName
-    if($libClangPath)
+    if(-Not (Test-Path $targetCodeiumPath -PathType Container))
     {
-        $Env:LIB_CLANG_PATH = $libClangPath
+        New-Item -ItemType Directory -Path (Split-Path $targetCodeiumPath) 
     }
-    else
-    {
-        Write-Output "libclang.dll not found."
-    }
+    New-Item -ItemType SymbolicLink -Path $targetCodeiumPath -Target $codeiumPath 
+    Write-Output "Symbolic link created from $codeiumPath to $targetCodeiumPath"
 }
 else
 {
-    Write-Output "Clang is not installed."
+    Write-Output "Symbolic Link already exists at $targetCodeiumPath"
 }
 
-
-if ($clangVersion -and (-Not (Test-Path $targetClangCompletePath -PathType Any)))
+if (-Not (Test-Path $targetClangCompletePath -PathType Any))
 {
     if(-Not (Test-Path $targetClangCompletePath -PathType Container))
     {
-        New-Item -ItemType Directory -Path (Split-Path $targetClangCompletePath)
+        New-Item -ItemType Directory -Path (Split-Path $targetClangCompletePath) 
     }
-    New-Item -ItemType SymbolicLink -Path $targetClangCompletePath -Target $clangCompletePath
+    New-Item -ItemType SymbolicLink -Path $targetClangCompletePath -Target $clangCompletePath 
     Write-Output "Symbolic link created from $clangCompletePath to $targetClangCompletePath"
 }
-elseif($clangVersion)
+else
 {
-    Write-Output "Symbolic link already exists at $targetClangCompletePath"
+    Write-Output "Symbolic Link already exists at $targetClangCompletePath"
 }
-
-
