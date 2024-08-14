@@ -104,3 +104,32 @@ function prompt
     Write-Host -NoNewline $promptString
     return " "
 }
+
+$clangVersion = clang --version
+if($clangVersion)
+{
+    $libClangPath = gci -Recurse -Filter "libclang.dll" "C:\Program Files\LLVM" | Select-Object -First 1 -ExpandProperty FullName
+$libIncludePath = gci -Recurse -Filter "include" "C:\Program Files\LLVM" | Select-Object -First 1 -ExpandProperty FullName
+
+    if($libClangPath)
+    {
+        $Env:LIB_CLANG_PATH = $libClangPath
+    }
+    else    
+    {
+        Write-Output "Clang library not found. clang_complete will not work."
+    }
+
+    if($libIncludePath)
+    {
+        $Env:CLANG_INCLUDE_PATH = $libIncludePath
+    }
+    else
+    {
+        Write-Output "Clang includes not found. clang_complete will not work."
+    }
+}
+else
+{
+    Write-Output "Clang is not installed. clang_complete will not work."
+}

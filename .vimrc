@@ -82,7 +82,7 @@ set regexpengine=0
 " Try to set colour scheme
 try
     colorscheme molokai
-    "let g:molokai_original = 1
+    let g:colors_name='molokai'
 catch
 endtry
 
@@ -184,9 +184,15 @@ noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 " Toggle paste mode with ',pp'
 map <leader>pp :setlocal paste!<cr>
 
+" Provide Clang Complete path to lib file
+let g:clang_library_path = expand('$LIB_CLANG_PATH')
+
+" Set colours of Clang Complete menu
+silent! hi! Pmenu ctermfg=34 ctermbg=240
+
 " Turn Off Codeium Bindings 
 let g:codeium_disable_bindings = 1
-"Attemp shift-tab remap
+"Attempt shift-tab remap
 imap <script><silent><nowait><expr> <C-g> codeium#Accept()
 imap <C-;> <Cmd> call codeium#CycleCompletions(1)<CR>
 imap <C-.> <Cmd> call codeium#CycleCompletions(-1)<CR>
