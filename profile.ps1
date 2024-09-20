@@ -26,6 +26,26 @@ function Get-GitBranch
     }
 }
 
+# Check if vim (traditional Vim) is available
+if (Get-Command vim -ErrorAction SilentlyContinue) 
+{
+    Set-Alias oldvim (Get-Command vim).Source
+} 
+else 
+{
+    Write-Host "Vim (vim) is not available on this system."
+}
+
+
+# Check if nvim (Neovim) is available
+if (Get-Command nvim -ErrorAction SilentlyContinue) 
+{
+    Set-Alias vim (Get-Command nvim).Source
+}
+else
+{
+    Write-Host "Neovim (nvim) is not available on this system."
+}
 
 function prompt
 {
