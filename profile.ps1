@@ -1,3 +1,23 @@
+function npp
+{
+    param
+    (
+    [string] $filePath
+    )
+    
+    $fullPath = Resolve-Path -Path $filePath
+    $nppPath = "E:\Notepad++\notepad++.exe"
+
+    if(Test-Path $fullPath)
+    {
+        Start-Process $nppPath -ArgumentList $fullPath
+    }
+    else
+    {
+        Write-Host "File not found: $fullPath"
+    }
+}
+
 function GoTo-Obsidian
 {
     cd $env:ObsidianNotes
