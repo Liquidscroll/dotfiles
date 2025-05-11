@@ -1,3 +1,0 @@
-[submodule "plugins/clang_complete"]
-	path = plugins/clang_complete
-	url = https://github.com/xavierd/clang_complete.git

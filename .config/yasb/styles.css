@@ -1,0 +1,163 @@
+/*
+.widget .label {} -> Global label for all
+.active-window-widget {} -> Styles specific to the active window widget
+.clock-widget {} -> Styles specific to the clock widget
+.cpu-widget {} -> Styles specific to the CPU widget
+.memory-widget {} -> Styles specific to the memory widget
+.weather-widget {} -> Styles specific to the weather widget
+.komorebi-workspaces {} -> Styles specific to komorebi workspaces
+.komorebi-active-layout {} -> Styles specific to komorebi active layout
+.volume-widget {} -> Styles specific to the volume widget 
+.apps-widget {} -> Styles specific to the apps widget
+.power-menu-widget {} -> Styles for the power menu button widget
+.power-menu-popup {} -> Styles for the power menu popup widget
+.power-menu-popup > .button {} -> Styles for power buttons inside the popup 
+.power-menu-popup > .button > .icon,
+.power-menu-popup > .button > .label {} -> Styles for power buttons icons and labels inside the popup 
+.media-widget {} -> Styles specific to the media widget
+.github-widget {} -> Styles specific to the github widget
+.language-widget {} -> Styles specific to the language widget
+.disk-widget {} -> Styles specific to the disk widget
+.taskbar-widget {} -> Styles specific to the taskbar widget
+.libre-monitor-widget {} -> Styles specific to the Libre Hardware Monitor widget
+ */
+:root {
+    --theme-background: 39, 40, 34;
+    --theme-foreground: 241, 235, 235;
+    --theme-black:      72, 72, 62;
+    --theme-gray: 118, 113, 94;
+    --theme-red: 220, 37, 102;
+    --theme-light-red: 250, 39, 114;
+    --theme-green: 143, 192, 41;
+    --theme-light-green: 167, 226, 46;
+    --theme-yellow: 212, 201, 110;
+    --theme-light-yellow: 231, 219, 117;
+    --theme-blue: 85, 188, 206;
+    --theme-light-blue: 102, 207, 238;
+    --theme-purple: 147, 88, 254;
+    --theme-light-purple: 174, 130, 255;
+    --theme-cyan: 86, 183, 165;
+    --theme-light-cyan: 102, 239, 213;
+    --theme-white: 172, 173, 161;
+    --theme-light-white: 207, 208, 194;
+}
+
+* {
+    font-size: 15px;
+    color: var(--theme-foreground);
+    font-weight: regular;
+    font-family: "Inter";
+    margin: 0;
+    padding: 0;
+}
+.yasb-bar {
+    padding: 0;
+    margin: 0;
+    background-color: rgba(var(--theme-background), 0.3);
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgba(var(--theme-light-green), 0.4);
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+}
+.widget {
+    padding: 0 8px;
+    border-style: solid;
+}
+.widget .label {
+    padding: 1px 2px 1px 2px;
+}
+.widget .label.alt {
+    padding: 1px 8px 1px 8px;
+}
+
+.active-window-widget {
+    margin: 2px 10px 3px 0px;
+    background-color: rgba(var(--theme-background), 0.7);
+    border-radius: 9px;
+    border-width: 1px;
+    border-color: rgb(var(--theme-gray));
+}
+
+.active-window-widget .widget-container {
+    margin: 4px 4px 4px 4px;
+    padding: 10px 10px 10px 10px;
+}
+
+.clock-widget {
+    background-color: rgba(var(--theme-background), 0.7);
+    border-radius: 10px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(var(--theme-white));
+    margin: 2px 0 3px 0;
+    padding: 0 20px 0 20px;
+}
+
+.system-widget .label {
+    font-size: 30px;
+    color: rgb(var(--theme-light-blue));
+    background-color: rgba(var(--theme-background), 0.7);
+    border-color: rgba(var(--theme-blue), 0.9);
+    border-radius: 6px;
+    border-width: 1px;
+    border-style: solid;
+    margin: 3px 0 3px 0;
+    padding: 0 5px 2px 5px;
+}
+
+.wallpapers-widget {
+    background-color: rgba(var(--theme-background), 0.7);
+    border-radius: 8px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(var(--theme-green));
+    margin: 3px 6px 3px 0;
+    padding: 0 4px 0 4px;
+}
+
+.komorebi-active-layout {
+    background-color: rgba(var(--theme-background), 0.7);
+    border-radius: 8px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(var(--theme-red));
+    margin: 3px 6px 3px 0;
+}
+.komorebi-active-layout .label {
+    color: rgb(var(--theme-red));
+}
+.wallpapers-widget .icon {
+    font-size: 25px;
+    color: rgb(var(--theme-light-green))
+}
+
+.weather-widget, .volume-widget, .microphone-widget {
+    background-color: rgba(var(--theme-background), 0.7);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(var(--theme-light-white));
+    margin: 3px 6px 3px 0;
+}
+
+
+.icon {
+    font-size: 20px;
+}
+.volume-widget .icon {
+    margin: 1px 2px 0 0;
+}
+/* WEATHER WIDGET */
+.weather-widget .icon {
+    font-size: 20px;
+    margin: 0 2px 1px 0;
+}
+.weather-widget .icon.sunnyDay {
+    color: rgb(221, 210, 107);
+}
+.weather-widget .icon.clearNight {
+    color: rgb(107, 189, 221);
+    font-size: 22px;
+    margin: 1px 2px 0px 0;
+}
