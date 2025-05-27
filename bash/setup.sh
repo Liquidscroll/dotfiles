@@ -31,8 +31,23 @@ info "Symlinking shared bash libs..."
 symlink_dotfile "lib/shared.sh" "$(xdg_config_dir)/lib/shared.sh"
 symlink_dotfile "lib/colours.sh" "$(xdg_config_dir)/lib/colours.sh"
 
-
+# TODO: install spotify-launcher
 info "Symlinking spotify-launcher configuration..."
 symlink_dotfile "spotify-launcher.conf" "$(xdg_config_dir)/spotify-launcher.conf"
+
+# TODO: install starship
 info "Symlinking Starship prompt configuration..."
 symlink_dotfile "starship.toml" "$(xdg_config_dir)/starship.toml"
+
+# TODO: install hyprland
+symlink_dotfile "hypr/hyprland.conf" "$(xdg_config_dir)/hypr/hyprland.conf"
+symlink_dotfile "hypr/hyprpaper.conf" "$(xdg_config_dir)/hypr/hyprpaper.conf"
+
+# TODO: install uwsm
+# symlink config + env
+
+# TODO: install wezterm
+# TODO: symlink config
+
+# TODO: install zellij
+symlink_dotfile "zellij/config.kdl" "$(xdg_config_dir)/zellij/config.kdl"
