@@ -1,0 +1,90 @@
+# Get editor completions based on the config schema
+"$schema" = 'https =//starship.rs/config-schema.json'
+
+format = '$username $directory $fill $jobs$time $git_branch$line_break$character'
+
+
+# Inserts a blank line between shell prompts
+add_newline = true
+palette = 'my_monokai'
+
+# Replace the '❯' symbol in the pr
+[character]
+success_symbol = '[\$](bold green)'
+error_symbol = '[✗](bold red)'
+
+[directory]
+style = 'cyan'
+truncate_to_repo = false
+truncation_symbol = '~/../'
+
+[git_branch]
+format = "[\n$symbol $branch]($style)"
+style = 'yellow'
+symbol = ''
+
+[fill]
+symbol = ' '
+
+[jobs]
+symbol = '+ '
+style = 'bold red'
+
+[time]
+disabled = false
+format = '[$time]($style)'
+time_format = '%R'
+style = 'red'
+
+[username]
+style_user = 'fg'
+format = '[@$user]($style)'
+show_always = true
+aliases = { "jojat" = "liquidscroll" }
+
+[package]
+disabled = true
+
+[palettes.my_monokai]
+# fg = "#abb2bf"
+# bg = "#282c34"
+# gray = "#676e7b"
+# pink = "#e06c75"
+# green = "#98c379"
+# cyan = "#56b6c2"
+# aqua = "#61afef"
+# yellow = "#e5c07b"
+# purple = "#c678dd"
+# peanut = "#f6d5a4"
+# orange = "#d19a66"
+# dark_pink = "#ff008c"
+# dark_cyan = "#2b8db3"
+# red = "#f75f5f"
+# dark_red = "#d03770"
+# white = "#d7d7ff"
+# light_gray = "#9ca3b2"
+# dark_gray = "#4b5261"
+# vulcan = "#383a3e"
+# dark_green = "#2d2e27"
+# dark_blue = "#26292f"
+# black = "#1e2024"
+
+
+black =   "#48483e"
+red =   "#dc2566"
+green =   "#8fc029"
+yellow =   "#d4c96e"
+blue =   "#55bcce"
+purple =   "#9358fe"
+cyan =   "#56b7a5"
+white =   "#acada1"
+gray =   "#76715e"
+light-red =   "#fa2772"
+light-green =   "#a7e22e"
+light-yellow =   "#e7db75"
+light-blue =   "#66d9ee"
+light-purple =   "#ae82ff"
+light-cyan =   "#66efd5"
+light-white =   "#cfd0c2"
+fg = "#f1ebeb"
+bg = "#272822"
