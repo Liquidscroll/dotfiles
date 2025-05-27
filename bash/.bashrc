@@ -13,8 +13,8 @@ else
 fi
 
 HISTCONTROL=ignoreboth:erasedups # ignoreboth (ignoredups & ignorespace), erasedups (better than ignoredups)
-HISTSIZE=10000 # ignoreboth (ignoredups & ignorespace), erasedups (better than ignoredups)
-HISTFILESIZE=20000 # ignoreboth (ignoredups & ignorespace), erasedups (better than ignoredups)
+HISTSIZE=10000
+HISTFILESIZE=20000
 shopt -s histappend # Append to the history file, don't overwrite it
 
 # Save and reload history after each command and before displaying the prompt
@@ -33,6 +33,10 @@ alias la='ls -A' # Show hidden files
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
+
+# Prevent shell redirection overwriting files
+# note: use |> to overwrite instead of >
+set -o noclobber
 
 if command_exists rg; then
     alias grep='rg'
