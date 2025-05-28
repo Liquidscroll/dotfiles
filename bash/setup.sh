@@ -77,23 +77,30 @@ if ! command_exists spotify-launcher; then
     sudo pacman -S spotify-launcher
 fi
 success "spotify-launcher installed."
-info "Symlinking spotify-launcher configuration..."
 symlink_dotfile "spotify-launcher.conf" "$(xdg_config_dir)/spotify-launcher.conf"
 
 if ! command_exists starship; then
     info "Installing starship with pacman..."
     sudo pacman -S starship
 fi
-success "spotify-launcher installed."
-info "Symlinking Starship prompt configuration..."
+success "starship.rs installed."
 symlink_dotfile "starship.toml" "$(xdg_config_dir)/starship.toml"
 
+if ! command_exists uwsm; then
+    info "Installing uwsm..."
+    sudo pacman -S uwsm libnewt
+fi
+success "uwsm installed."
+symlink_dotfile "uwsm/env" "$(xdg_config_dir)/uwsm/env"
+symlink_dotfile "uwsm/env-hyprland" "$(xdg_config_dir)/uwsm/env-hyprland"
 
-# TODO: install uwsm
-# symlink config + env
-
-# TODO: install wezterm
-# TODO: symlink config
+if ! command_exists wezterm; then
+    info "Installing wezterm and nerd fonts..."
+    sudo pacman -S ttf-nerd-fonts-symbols-mono
+    yay -S wezterm-git
+fi
+success "Wezterm installed."
+symlink_dotfile "wezterm/wezterm.lua" "$(xdg_config_dir)/wezterm/wezterm.lua"
 
 if ! command_exists zellij; then
     info "Installing zellij with pacman..."
