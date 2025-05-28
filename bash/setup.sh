@@ -131,4 +131,11 @@ if ! command_exists nvim; then
     yay -S neovim-git
 fi
 success "Neovim installed."
-symlink_dotfiles "nvim/" "$(xdg_config_dir)/"
+symlink_dotfiles "nvim/" "$(xdg_config_dir)/nvim"
+
+if ! command_exists eww; then
+    info "Installing eww-git with yay..."
+    yay -S eww-git
+fi
+success "Eww installed."
+symlink_dotfiles "eww/" "$(xdg_config_dir)/eww"
