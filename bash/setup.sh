@@ -79,6 +79,11 @@ else
 fi
 mkdir -p "$(xdg_config_dir)/hypr"
 symlink_dotfiles "hypr/hyprland.conf" "$(xdg_config_dir)/hypr/hyprland.conf"
+
+if ! command_exists hyprpaper; then
+    info "Installing hyprpaper with pacman..."
+    sudo pacman -S hyprpaper
+fi
 symlink_dotfiles "hypr/hyprpaper.conf" "$(xdg_config_dir)/hypr/hyprpaper.conf"
 
 if ! command_exists spotify-launcher; then
