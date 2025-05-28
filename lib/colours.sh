@@ -18,15 +18,15 @@ CROSS="${RED}✗${RESET}"
 
 # Message functions
 function info() {
-  echo -e "${CYAN}[INFO]${RESET}  $*"
+  echo -e "${CYAN} [INFO]${RESET}  $*"
 }
 
 function success() {
-  echo -e "${GREEN}[OK]${RESET}    $*"
+  echo -e "${GREEN}   [OK]${RESET}    $*"
 }
 
 function warn() {
-  echo -e "${YELLOW}[WARN]${RESET}  $*"
+  echo -e "${YELLOW} [WARN]${RESET}  $*"
 }
 
 function error() {

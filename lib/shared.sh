@@ -69,8 +69,17 @@ function is_linux() {
   [[ "$_current_os" == "Linux" ]]
 }
 
+
 function is_windows() {
   [[ "$_current_os" =~ MINGW|MSYS|CYGWIN|NT* ]]
+}
+
+function is_arch() {
+    [[ "$(grep '^ID=' /etc/os-release | cut -d '=' -f2)" == "arch" ]]
+}
+
+function is_sudo() {
+    [[ "$EUID" -eq 0 ]]
 }
 
 # Detect if running Hyprland
