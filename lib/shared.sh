@@ -23,17 +23,35 @@ function dotfiles_location() {
 }
 
 source_if_exists "$(dotfiles_location)/lib/colours.sh"
-# Create a symlink from dotfiles to destination
-function symlink_dotfile() {
-  local file="$1"
-  local destination="$2"
-  local full_file_path="$(dotfiles_location)/$file"
 
-  if [ ! -e "$destination" ]; then
-    info "Symlinking $full_file_path -> $destination"
-    mkdir -p "$(dirname "$destination")"
-    ln -s "$full_file_path" "$destination"
-  fi
+function symlink_dotfiles() {
+    local file_rel_path="$1"
+    local dest="$2"
+    local full_file_path="$(dotfiles_location)/$file_rel_path"
+
+    dest="${dest%/}"
+    local target_link_parent_dir="$(dirname "$dest")"
+
+    if [ ! -e "$full_file_path" ]; then
+        error "Source path does not exist: $full_file_path"
+        error "Skipping symlink to $target_link_path"
+        return 1
+    fi
+
+    if [ ! -d "$target_link_parent_dir" ]; then
+        info "Creating parent directory for link: $target_link_parent_dir"
+        mkdir -p "$target_link_parent_dir"
+    fi
+
+    if [ ! -e "$dest" ]; then
+        info "Symlinking $full_file_path -> $dest"
+        if ln -sn "$full_file_path" "$dest"; then
+            success "Symlinked $file_rel_path to $dest"
+        else
+            error "Failed to symlink $file_rel_path to $dest"
+            return 1
+        fi
+    fi
 }
 
 # Ensure a git repo is cloned
