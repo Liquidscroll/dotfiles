@@ -62,46 +62,6 @@ function symlink_dotfiles() {
         error "Failed to link $src -> $dest"
     fi
 }
-# function symlink_dotfiles() {
-#     local file_rel_path="$1"
-#     local dest="$2"
-#     echo "Linking file_rel_path: $file_rel_path"
-#     echo "To dest: $dest"
-#     local full_file_path="$(dotfiles_location)/$file_rel_path"
-#
-#     dest="${dest%/}"
-#     local target_link_parent_dir="$(dirname "$dest")"
-#
-#     echo "Source at: $full_file_path"
-#     if [ ! -e "$full_file_path" ]; then
-#         error "Source path does not exist: $full_file_path"
-#         error "Skipping symlink to $target_link_path"
-#         return 1
-#     fi
-#
-#     echo "Parent dir: $target_link_parent_dir"
-#     if [ ! -d "$target_link_parent_dir" ]; then
-#         info "Creating parent directory for link: $target_link_parent_dir"
-#         mkdir -p "$target_link_parent_dir"
-#     fi
-#
-#     echo "\$dest == $dest"
-#     res="false"
-#     if [ ! -e "$dest" ]; then
-#         res="true"
-#     fi
-#     echo "Testing ! -e \$dest == $res"
-#
-#     if [ ! -e "$dest" ]; then
-#         info "Symlinking $full_file_path -> $dest"
-#         if ln -sn "$full_file_path" "$dest"; then
-#             success "Symlinked $file_rel_path to $dest"
-#         else
-#             error "Failed to symlink $file_rel_path to $dest"
-#             return 1
-#         fi
-#     fi
-# }
 
 # Ensure a git repo is cloned
 function ensure_git_clone() {
