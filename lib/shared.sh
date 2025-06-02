@@ -27,20 +27,23 @@ function symlink_dotfiles() {
     local file_rel_path="$1"
     local dest="$2"
 
-    local src="$(dotfiles_location)/${file_rel_path%/}"
+    local src
+    src="$(dotfiles_location)/${file_rel_path%/}"
     if [[ ! -e "$src" ]]; then
         error "Source does not exist: $src"
         return 1
     fi
 
+    
     dest="${dest%/}"
-    # If src is a dir AND dest is an existing dir,
-    # then put the link INSIDE dest using the same basename
-    if [[ -d "$src" && -d "$dest" ]]; then
+    #If src is a dir AND dest is an existing dir,
+    #then put the link INSIDE dest using the same basename
+    if [[ -d "$src" && -d "$dest" && ! -L "$dest" ]]; then
         dest="$dest/$(basename "$src")"
     fi
 
-    local parent_dir="$(dirname "$dest")"
+    local parent_dir
+    parent_dir="$(dirname "$dest")"
     if [[ ! -d "$parent_dir" ]]; then
         info "Creating parent directory: $parent_dir"
         mkdir -p "$parent_dir"
