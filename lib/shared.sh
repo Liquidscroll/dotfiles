@@ -82,7 +82,6 @@ add_paths() {
     for d in "$@"; do
         dir_no_slash="${d}"
         if [[ -d "$dir_no_slash" && ! ":$PATH:" == *":$dir_no_slash:"* ]]; then
-            info "Adding $dir_no_slash to PATH"
             PATH="$PATH:$dir_no_slash"
         fi
     done
