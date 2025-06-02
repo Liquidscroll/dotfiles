@@ -89,20 +89,14 @@
       :onscroll "if [[ '{}' == 'up' ]]; then wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 2.5%+; else wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 2.5%-; fi"
       :vexpand true :valign "fill"
       (box :orientation "v" :valign "fill" :vexpand true
-        ;; Button to open Tofi-based sound chooser and toggle audio details script
-        ;;;;;; TODO:
-        ; Change this so that left click mutes/unmutes volume
-        ; Right click will open tofi based menu to choose device (i.e. speakers or headset)
-
         ;;; TODO?:
         ; Generalise this, so that I can reuse it for microphone later on.
         (button :class "audio-sink-button"
-                :onclick "./scripts/audio_details.py mute"
-                ;; User comment: make this tofi etc
-                ;rofi -theme ~/.config/rofi/launchers/type-4/style-2.rasi -show rofi-sound -modi 'rofi-sound:rofi-sound-output-chooser' &"
-                :onrightclick "./scripts/audio_details.py menu"
+                :onclick "./scripts/audio_controller.sh mute"
+                :onrightclick "./scripts/audio_controller.sh menu"
           audio_sink_icon) 
         ;; Button to open pavucontrol and display current volume percentage
+        ;; TODO?: Make this a slider that pops out on click
         (button :class "volume-percent-button"
                 :onclick "pavucontrol &"
           "${current_volume_poll}%")))))
@@ -121,10 +115,10 @@
 
 (deflisten workspaces_data
   :initial '{"HDMI-A-2": [], "HDMI-A-1": []}' 
-  "./scripts/hyprworkspaces.py")
+  "./scripts/hyprworkspaces.sh")
 
 ;; Volume Data Listener
-(deflisten current_volume_poll :initial "0" "./scripts/audio_details.py volume")
+(deflisten current_volume_poll :initial "0" "./scripts/audio_controller.sh volume")
 ;; Time Pollers
 (defpoll hour_poll :interval "1s" "date +%H")
 (defpoll min_poll  :interval "1s" "date +%M")
