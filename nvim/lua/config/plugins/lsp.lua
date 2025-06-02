@@ -136,6 +136,11 @@ return {
         on_attach = on_attach,
       }
 
+      lspconfig.taplo.setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+      }
+
       vim.g.zig_fmt_parse_errors = 0
       vim.g.zig_fmt_autosave = 1
 
