@@ -25,7 +25,7 @@ shopt -s checkwinsize # Handle terminal resizing
 #PROMPT_COMMAND="history -a; history -n${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
 
 
-add_paths "$HOME/.local/bin"
+add_paths "$HOME/.local/bin" "$HOME/.cache/.bun/bin"
 # --- Aliases ---
 # General ls
 alias ls='ls --color=auto -F --group-directories-first'
