@@ -28,6 +28,7 @@ symlink_dotfiles "scripts/" "$(xdg_config_dir)"
 symlink_dotfiles "tofi/" "$(xdg_config_dir)"
 symlink_dotfiles "uwsm/" "$(xdg_config_dir)"
 symlink_dotfiles "wezterm/" "$(xdg_config_dir)"
+symlink_dotfiles "yazi/" "$(xdg_config_dir)"
 symlink_dotfiles "zellij/" "$(xdg_config_dir)"
 
 mkdir -p "$(xdg_config_dir)/wireplumber"
@@ -39,7 +40,7 @@ symlink_dotfiles "wireplumber/scripts/" "$(xdg_data_dir)/wireplumber/"
 symlink_dotfiles "monokai_reference.json" "$(xdg_config_dir)/monokai_reference.json"
 symlink_dotfiles "spotify-launcher.conf" "$(xdg_config_dir)/spotify-launcher.conf"
 symlink_dotfiles "starship.toml" "$(xdg_config_dir)/starship.toml"
-symlink_dotfiles ".bashrc" "$(xdg_config_dir)/.bashrc"
+symlink_dotfiles ".bashrc" "$HOME/.bashrc"
 
 
 

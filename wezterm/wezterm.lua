@@ -1,6 +1,7 @@
 local wezterm = require 'wezterm'
 local config = {}
 config.color_scheme = 'Monokai (terminal.sexy)'
+config.colors = { background = '#161714' }
 config.font = wezterm.font("Hack Nerd Font Mono Regular")
 config.window_background_opacity = 0.70
 config.window_decorations = "NONE"
