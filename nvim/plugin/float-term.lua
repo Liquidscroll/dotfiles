@@ -50,7 +50,7 @@ end
 vim.api.nvim_create_user_command("OpenFloatTerm", toggle_terminal, {})
 vim.keymap.set({ "n", "t" }, "<leader>tt", toggle_terminal, { desc = "Open Floating Terminal" })
 
-vim.opt_global.shell      = 'pwsh'
-vim.opt_global.shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode'
-vim.opt_global.shellpipe  = '2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode'
--- windows only, need to account for linux here
+-- vim.opt_global.shell      = 'pwsh'
+-- vim.opt_global.shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode'
+-- vim.opt_global.shellpipe  = '2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode'
+-- -- windows only, need to account for linux here
