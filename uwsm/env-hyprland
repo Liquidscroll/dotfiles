@@ -1,1 +1,6 @@
+# Environment variables specific to Hyprland.
+# setup.sh symlinks this file to $XDG_CONFIG_HOME/uwsm/env-hyprland so that
+# Hyprland or other startup scripts can source it when a session starts.
+
+# Cursor size for Hyprland's own cursor theme
 export HYPRCURSOR_SIZE=24
