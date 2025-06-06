@@ -23,6 +23,8 @@ function dotfiles_location() {
 }
 
 source_if_exists "$(dotfiles_location)/lib/colours.sh"
+# Allow external scripts to set DRY_RUN; default to false
+: "${DRY_RUN:=false}"
 function symlink_dotfiles() {
     local file_rel_path="$1"
     local dest="$2"
@@ -46,7 +48,9 @@ function symlink_dotfiles() {
     parent_dir="$(dirname "$dest")"
     if [[ ! -d "$parent_dir" ]]; then
         info "Creating parent directory: $parent_dir"
-        mkdir -p "$parent_dir"
+        if [[ "$DRY_RUN" != true ]]; then
+            mkdir -p "$parent_dir"
+        fi
     fi
     if [[ -L "$dest" && "$(readlink "$dest")" == "$src" ]]; then
         info "Already symlinked: $dest -> $src"
@@ -59,10 +63,17 @@ function symlink_dotfiles() {
     fi
 
     info "Symlinking $src -> $dest"
+    if [[ "$DRY_RUN" == true ]]; then
+        success "(dry-run) Would link $src -> $dest"
+        return 0
+    fi
+
     if ln -s "$src" "$dest"; then
         success "Linked $src -> $dest"
+        return 0
     else
         error "Failed to link $src -> $dest"
+        return 1
     fi
 }
 

@@ -14,7 +14,9 @@ Contains my configurations for:
 
 
 At the moment this is a WIP and is intended to only be used on Arch Linux.
-Before running, ensure pacman is upgraded with `pacman -Syu`
+Before running, ensure pacman is upgraded with `pacman -Syu`.
+Run `./setup.sh` to symlink the configuration files. Use `./setup.sh --dry-run`
+to preview the actions without modifying any files.
 
 ## Neovim
 `nvim-dap` launches `gdb` by default when debugging C or C++. On Linux the
