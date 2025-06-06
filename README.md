@@ -16,6 +16,13 @@ Contains my configurations for:
 At the moment this is a WIP and is intended to only be used on Arch Linux.
 Before running, ensure pacman is upgraded with `pacman -Syu`
 
+## Neovim
+`nvim-dap` launches `gdb` by default when debugging C or C++. On Linux the
+command `gdb` is used directly. Windows users can fall back to a MinGW
+installation (for example `C:\mingw64\bin\gdb.exe`).
+The `GDB_PATH` environment variable overrides the executable path on any
+platform.
+
 ## License
 This project is dual-licensed under the MIT License or the Unlicense. See [LICENSE](LICENSE) for details.
 

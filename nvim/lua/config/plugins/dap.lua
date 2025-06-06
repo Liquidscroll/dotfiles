@@ -13,18 +13,26 @@ return {
 
       require("nvim-dap-virtual-text").setup({ commented = true })
 
-      dap.adapters.cppdbg = {
-        id = 'cppdbg',
+      local gdb_path = os.getenv("GDB_PATH")
+      if not gdb_path or gdb_path == "" then
+        if vim.fn.has('win32') == 1 then
+          gdb_path = "C:/mingw64/bin/gdb.exe"
+        else
+          gdb_path = "gdb"
+        end
+      end
+
+      dap.adapters.gdb = {
         type = "executable",
-        command =
-        "C:\\Users\\jojat\\.vscode\\extensions\\ms-vscode.cpptools-1.22.11-win32-x64\\debugAdapters\\bin\\OpenDebugAD7.exe",
+        command = gdb_path,
+        args = { "-i=mi" },
         options = { detached = false, virt_text_pos = 'eol' }
       }
 
       dap.configurations.cpp = {
         {
           name = "Launch file",
-          type = "cppdbg",
+          type = "gdb",
           request = "launch",
           program = function()
             return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
