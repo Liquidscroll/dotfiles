@@ -80,11 +80,11 @@ function command_menu() {
     debug "Listing available sinks"
 
     local selected_sink
-    selected_sink=$(echo "$sinks" | tofi --prompt-text="Audio Devices:" --width=600 --height=400   \
-    debug "Selected sink entry: $selected_sink"
-        --hide-input=true --hidden-character= --padding-top=20      \
+    selected_sink=$(echo "$sinks" | tofi --prompt-text="Audio Devices:" --width=600 --height=400 \
+        --hide-input=true --hidden-character= --padding-top=20 \
         --padding-bottom=20 --corner-radius=10 --padding-right=100 \
         --margin-left=0)
+    debug "Selected sink entry: $selected_sink"
 
     wpctl set-default "$(echo "$selected_sink" | cut -d'|' -f1)"
 

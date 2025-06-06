@@ -1,0 +1,2 @@
+# ShellCheck configuration for this project
+exclude=SC1090,SC1091
