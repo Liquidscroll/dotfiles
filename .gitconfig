@@ -1,0 +1,20 @@
+[init]
+    defaultBranch = main
+[fetch]
+    prune = true
+[user]
+    name = Jonathan Tynan
+    email = jojaty@gmail.com
+[core]
+    autocrlf = input
+    editor = nvim
+[credential]
+    credentialStore = secretservice
+    helper = /usr/bin/git-credential-manager
+[credential "https://dev.azure.com"]
+    useHttpPath = true
+[filter "lfs"]
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+    clean = git-lfs clean -- %f

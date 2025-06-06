@@ -1,0 +1,4 @@
+[Desktop Entry]
+# This file disables the default Blueman autostart entry.
+# Blueman is started explicitly from Hyprland (see hypr/hyprland.conf).
+Hidden=true

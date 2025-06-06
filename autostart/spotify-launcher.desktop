@@ -1,0 +1,4 @@
+[Desktop Entry]
+# This file disables the default Spotify launcher autostart entry.
+# Spotify is started explicitly from Hyprland (see hypr/hyprland.conf).
+Hidden=true

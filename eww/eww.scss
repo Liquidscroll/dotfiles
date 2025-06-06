@@ -1,0 +1,218 @@
+// Eww Widgets Stylesheet (SCSS)
+//
+// This file defines the styles for the Eww bar components.
+// Theme: Monokai inspired
+
+// Color Palette: Monokai
+$monokai0: #272822; // Darkest background
+$monokai1: #2d2e27; // Dark background
+$monokai2: #383931; // Lighter background / UI elements
+$monokai3: #49483e; // Comments / Disabled text
+$monokai4: #e8e8d3; // Light foreground / Secondary text
+$monokai5: #f2f2e8; // Lighter foreground
+$monokai6: #f8f8f2; // Brightest foreground / Primary text
+
+$monokai-base-bright: #75715e;
+$monokai-base: #272822;
+
+$monokai-red-bright: #f92672;
+$monokai-red: #c72259;
+$monokai-green-bright: #a6e22e;
+$monokai-green: #81b023;
+$monokai-orange-bright: #f4bf75;
+$monokai-orange: #c29661;
+$monokai-blue-bright: #66d9ef;
+$monokai-blue: #53a8bd;
+$monokai-purple-bright: #ae81ff;
+$monokai-purple: #8f70cc;
+$monokai-cyan-bright: #a1efe4;
+$monokai-cyan: #7ebdbd;
+$monokai-gray-bright: #f9f8f5;
+$monokai-gray: #c4c4c4;
+
+$background0: $monokai0; // Main window background
+$background1: $monokai1; // Slightly lighter background
+$background2: $monokai2; // UI element background (buttons, containers)
+$background3: $monokai3; // Disabled/Subtle background elements
+
+$foreground0: $monokai6; // Primary text color
+$foreground1: $monokai5; // Secondary text color
+$foreground2: $monokai4; // Tertiary/Subtle text color
+
+// Global Resets & Base Window Styles
+* {
+  all: unset;
+}
+
+window {
+  // rgba of $background0 for opacity
+  background-color: rgba(39, 40, 34, 0.9);
+  color: $foreground2;
+  font-size: 14px;
+  font-family: "Inter Nerd Font Propo", "Font Awesome 6 Free";
+
+  &>* {
+    // Direct children of the window
+    margin: 3px; // Default margin for top-level widgets in the window
+  }
+}
+
+// Segment Styles (for vbar layout)
+// These correspond to the :class "segment-..." in the .yuck file
+.segment-top {
+  margin-top: 10px; // Spacing for the top group of widgets
+}
+
+.segment-bottom {
+  margin-bottom: 10px; // Spacing for the bottom group of widgets
+}
+
+// Workspaces Widget
+.workspaces {
+  button {
+    background-color: $background2;
+    margin: 3px; // Spacing between workspace buttons
+    padding-left: 1px; // Slight padding for text in button
+
+    &.inactive {
+      color: $monokai-cyan;
+    }
+
+    &.active {
+      color: $monokai-cyan-bright;
+      font-weight: 800; // Bold for active workspace
+    }
+
+    &.occupied {
+      font-size: 1.01rem; // Slightly larger if occupied (example)
+    }
+
+    &.empty {
+      font-size: 0.8rem; // Slightly smaller if empty (example)
+    }
+  }
+}
+
+// Volume Widget
+.volume-metric {
+  background-color: $background2;
+  padding: 0; // Padding is handled by inner elements if needed
+  border-radius: 4px;
+
+  scale {
+    margin-bottom: 5px; // Space below the slider
+
+    trough {
+      all: unset;
+      background-color: $monokai1; // Darker trough background
+      min-width: 34px;
+      min-height: 3px;
+      border-radius: 2px; // Rounded trough
+
+      highlight {
+        all: unset;
+        background-color: $monokai-blue;
+        border-bottom-right-radius: 5px; // This might be too specific, consider general radius
+      }
+    }
+  }
+
+  .audio-sink-button {
+    color: $monokai-blue;
+  }
+
+  .volume-percent-button {
+    color: $foreground0;
+  }
+
+  slider {
+    all: unset;
+  }
+}
+
+// Metric Widgets
+.metric-container {
+  // For boxes grouping multiple metrics
+  border-radius: 4px;
+  background-color: $background2;
+  padding: 2px;
+  font-size: 0.85em;
+}
+
+.metric {
+  // For an individual metric item (icon + text)
+  padding: 2px;
+}
+
+.metric-icon {
+  font-family: "Font Awesome 6 Free", "Inter Nerd Font Propo";
+  font-size: 0.7em;
+  color: $monokai-green;
+
+
+  &.large-symbol {
+    font-size: 0.8em;
+  }
+}
+
+
+// Time Widget
+.time {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  color: $monokai-gray-bright;
+}
+
+// Date Widget
+.date {
+  color: $monokai-gray-bright;
+}
+
+
+// Music Popup
+// todo
+.music_popup {
+  all: unset;
+  background-color: $monokai1; // Slightly different background for popups
+  padding: 0px 20px;
+  margin: 0;
+  border-radius: 5px;
+  border: 1px solid $monokai3;
+}
+
+// System Tray
+menu {
+  // The systray pop-up menu itself
+  padding: 5px;
+  background-color: $background0;
+  border: 1px solid $background2; // Subtle border for the menu
+  border-radius: 4px;
+
+  menuitem {
+    font-size: 14px;
+    padding: 4px 8px;
+    color: $foreground0;
+    border-radius: 3px;
+
+    &:disabled {
+      label {
+        color: $background3; // Muted color for disabled text
+      }
+    }
+
+    &:hover {
+      background-color: $background2; // Highlight on hover
+      color: $foreground0; // Ensure text color remains contrasted on hover
+    }
+  }
+
+  separator {
+    background-color: $background2; // Color for the separator line
+    margin: 4px 0px; // Margin above and below separator
+    min-height: 1px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

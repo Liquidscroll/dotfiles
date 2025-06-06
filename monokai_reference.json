@@ -1,0 +1,222 @@
+{
+  "hex-special": {
+  "background0": "#272822",
+  "background1": "#2d2e27",
+  "background2": "#383931",
+  "background3": "#49483e",
+  "foreground0": "#f8f8f2",
+  "foreground1": "#f2f2e8",
+  "foreground2": "#e8e8d3"
+  },
+  "hex-colours": {
+  "monokai0": "#272822",
+  "monokai1": "#2d2e27",
+  "monokai2": "#383931",
+  "monokai3": "#49483e",
+  "monokai4": "#e8e8d3",
+  "monokai5": "#f2f2e8",
+  "monokai6": "#f8f8f2",
+  "monokai-base-bright": "#33332a",
+  "monokai-base": "#161714",
+  "monokai-red-bright": "#f92672",
+  "monokai-red": "#c72259",
+  "monokai-green-bright": "#a6e22e",
+  "monokai-green": "#81b023",
+  "monokai-yellow-bright": "#ebdb50",
+  "monokai-yellow": "#ccbf45",
+  "monokai-orange-bright": "#f08913",
+  "monokai-orange": "#d17711",
+  "monokai-blue-bright": "#66d9ef",
+  "monokai-blue": "#53a8bd",
+  "monokai-purple-bright": "#ae81ff",
+  "monokai-purple": "#8f70cc",
+  "monokai-cyan-bright": "#a1efe4",
+  "monokai-cyan": "#7ebdbd",
+  "monokai-gray-bright": "#f9f8f5",
+  "monokai-gray": "#c4c4c4"
+  },
+  "rgba-colours": {
+  "monokai0": [
+    39,
+    40,
+    34,
+    1.0
+  ],
+  "monokai1": [
+    45,
+    46,
+    39,
+    1.0
+  ],
+  "monokai2": [
+    56,
+    57,
+    49,
+    1.0
+  ],
+  "monokai3": [
+    73,
+    72,
+    62,
+    1.0
+  ],
+  "monokai4": [
+    232,
+    232,
+    211,
+    1.0
+  ],
+  "monokai5": [
+    242,
+    242,
+    232,
+    1.0
+  ],
+  "monokai6": [
+    248,
+    248,
+    242,
+    1.0
+  ],
+  "monokai-base-bright": [
+    117,
+    113,
+    94,
+    1.0
+  ],
+  "monokai-base": [
+    39,
+    40,
+    34,
+    1.0
+  ],
+  "monokai-red-bright": [
+    249,
+    38,
+    114,
+    1.0
+  ],
+  "monokai-red": [
+    199,
+    34,
+    89,
+    1.0
+  ],
+  "monokai-green-bright": [
+    166,
+    226,
+    46,
+    1.0
+  ],
+  "monokai-green": [
+    129,
+    176,
+    35,
+    1.0
+  ],
+  "monokai-orange-bright": [
+    244,
+    191,
+    117,
+    1.0
+  ],
+  "monokai-orange": [
+    194,
+    150,
+    97,
+    1.0
+  ],
+  "monokai-blue-bright": [
+    102,
+    217,
+    239,
+    1.0
+  ],
+  "monokai-blue": [
+    83,
+    168,
+    189,
+    1.0
+  ],
+  "monokai-purple-bright": [
+    174,
+    129,
+    255,
+    1.0
+  ],
+  "monokai-purple": [
+    143,
+    112,
+    204,
+    1.0
+  ],
+  "monokai-cyan-bright": [
+    161,
+    239,
+    228,
+    1.0
+  ],
+  "monokai-cyan": [
+    126,
+    189,
+    189,
+    1.0
+  ],
+  "monokai-gray-bright": [
+    249,
+    248,
+    245,
+    1.0
+  ],
+  "monokai-gray": [
+    196,
+    196,
+    196,
+    1.0
+  ]
+  },
+  "rgba-special": {
+  "background0": [
+    39,
+    40,
+    34,
+    1.0
+  ],
+  "background1": [
+    45,
+    46,
+    39,
+    1.0
+  ],
+  "background2": [
+    56,
+    57,
+    49,
+    1.0
+  ],
+  "background3": [
+    73,
+    72,
+    62,
+    1.0
+  ],
+  "foreground0": [
+    248,
+    248,
+    242,
+    1.0
+  ],
+  "foreground1": [
+    242,
+    242,
+    232,
+    1.0
+  ],
+  "foreground2": [
+    232,
+    232,
+    211,
+    1.0
+  ]
+  }
+}
