@@ -11,11 +11,11 @@ config.hide_tab_bar_if_only_one_tab = true
 
 config.keys = {}
 for i = 1, 9 do
-    table.insert(config.keys, {
-        key = tostring(i),
-        mods = 'SUPER',
-        action = wezterm.action.DisableDefaultAssignment,
-    })
+  table.insert(config.keys, {
+    key = tostring(i),
+    mods = 'SUPER',
+    action = wezterm.action.DisableDefaultAssignment,
+  })
 end
 
 return config

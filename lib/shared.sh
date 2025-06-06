@@ -34,7 +34,7 @@ function symlink_dotfiles() {
         return 1
     fi
 
-    
+
     dest="${dest%/}"
     #If src is a dir AND dest is an existing dir,
     #then put the link INSIDE dest using the same basename
@@ -113,7 +113,7 @@ function is_sudo() {
 
 # Detect if running Hyprland
 function is_hyprland() {
-  [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]] 
+  [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]
 }
 
 # XDG locations

@@ -67,7 +67,7 @@ window {
   margin-bottom: 10px; // Spacing for the bottom group of widgets
 }
 
-// Workspaces Widget 
+// Workspaces Widget
 .workspaces {
   button {
     background-color: $background2;
@@ -93,7 +93,7 @@ window {
   }
 }
 
-// Volume Widget 
+// Volume Widget
 .volume-metric {
   background-color: $background2;
   padding: 0; // Padding is handled by inner elements if needed
@@ -130,7 +130,7 @@ window {
   }
 }
 
-// Metric Widgets 
+// Metric Widgets
 .metric-container {
   // For boxes grouping multiple metrics
   border-radius: 4px;
@@ -156,20 +156,20 @@ window {
 }
 
 
-// Time Widget 
+// Time Widget
 .time {
   padding-top: 7px;
   padding-bottom: 7px;
   color: $monokai-gray-bright;
 }
 
-// Date Widget 
+// Date Widget
 .date {
   color: $monokai-gray-bright;
 }
 
 
-// Music Popup 
+// Music Popup
 // todo
 .music_popup {
   all: unset;
@@ -180,7 +180,7 @@ window {
   border: 1px solid $monokai3;
 }
 
-// System Tray 
+// System Tray
 menu {
   // The systray pop-up menu itself
   padding: 5px;

@@ -323,17 +323,17 @@ themes {
 
 // Choose the theme that is specified in the themes section.
 // Default: default
-// 
+//
 theme "default"
- 
+
 // Choose the base input mode of zellij.
 // Default: normal
-// 
+//
 default_mode "normal"
- 
+
 // The folder in which Zellij will look for themes
 // (Requires restart)
-// 
+//
 // theme_dir "/tmp"
 
 // Provide a command to execute when copying text. The text will be piped to
@@ -345,8 +345,8 @@ default_mode "normal"
 // copy_command "xclip -selection clipboard" // x11
 copy_command "wl-copy"                    // wayland
 // copy_command "pbcopy"                     // osx
-// 
+//
 // copy_command "pbcopy"
- 
-copy_on_select false 
- 
+
+copy_on_select false
+

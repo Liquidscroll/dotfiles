@@ -7,7 +7,7 @@ function install_hyprland_deps() {
 
 function build_hyprland() {
     info "Installing hyprland dependencies..."
-    install_hyprland_deps 
+    install_hyprland_deps
     info "Building hyprland in ~/builds/hyprland/"
     mkdir -p ~/builds/hyprland/
     git clone --recursive https://github.com/hyprwm/Hyprland ~/builds/hyprland/

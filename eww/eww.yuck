@@ -16,7 +16,7 @@
     (box :class "segment-middle" :valign "center"
       (middle_segment :screen screen))
     (box :class "segment-bottom" :valign "end"
-      (bottom_segment :screen screen)) 
+      (bottom_segment :screen screen))
   ))
 
 ;; Top Segment Widgets
@@ -24,12 +24,12 @@
   (box :orientation "v"
     (scroll :vscroll true  ;; Allows scrolling if systray items overflow
       (systray :class "systray" :orientation "v" :icon-size 13 :spacing 4))
-    (workspaces_widget :monitor monitor) 
+    (workspaces_widget :monitor monitor)
   ))
 
 (defwidget workspaces_widget [monitor]
   (box :orientation "v" :class "workspaces"
-    (for space in {workspaces_data[monitor]} 
+    (for space in {workspaces_data[monitor]}
       (button
         :class "${space.focused ? "active" : "inactive"}"
         :onclick "hyprctl dispatch workspace ${space.id}"
@@ -37,21 +37,21 @@
         (label :text "${space.name}")))))
 
 ;; Middle Segment Widgets
-(defwidget middle_segment [] (time_widget)) 
+(defwidget middle_segment [] (time_widget))
 
 (defwidget time_widget []
   (box :orientation "v" :class "time"
-    hour_poll min_poll sec_poll 
+    hour_poll min_poll sec_poll
   ))
 
-(defwidget metric_group [?screen] 
+(defwidget metric_group [?screen]
     (box :orientation "v" :space-evenly true :spacing 3 :visible {screen == 1}
         (children)
     )
 )
 
 ;; Bottom Segment Widgets
-(defwidget bottom_segment [screen] 
+(defwidget bottom_segment [screen]
   (box :orientation "v" :valign "end" :space-evenly false :spacing "5"
     (metric_group :screen screen
     (volume_widget)
@@ -64,7 +64,7 @@
       (metric_widget :icon "󰻠" :font-size 1 ; CPU icon
         "${round(EWW_CPU.avg, 0)}%")
       (metric_widget :icon "󰘚" :font-size 1 ; GPU icon
-        gpu_poll)) 
+        gpu_poll))
     )
       (date_widget))
 )
@@ -82,7 +82,7 @@
 (defwidget volume_widget []
   (box :orientation "v" :class "volume-metric" :space-evenly false :valign "fill" :vexpand false
     ;; Volume slider
-    (scale :orientation "h" :min 0 :max 101 :value current_volume_poll 
+    (scale :orientation "h" :min 0 :max 101 :value current_volume_poll
            :onchange "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ $(echo {} | sed 's/\\..*//g')%")
     ;; Eventbox for scroll-based volume adjustment and buttons
     (eventbox
@@ -94,7 +94,7 @@
         (button :class "audio-sink-button"
                 :onclick "./scripts/audio_controller.sh mute"
                 :onrightclick "./scripts/audio_controller.sh menu"
-          audio_sink_icon) 
+          audio_sink_icon)
         ;; Button to open pavucontrol and display current volume percentage
         ;; TODO?: Make this a slider that pops out on click
         (button :class "volume-percent-button"
@@ -104,7 +104,7 @@
 ;; Date Widget
 (defwidget date_widget []
   (box :orientation "v" :halign "center" :valign "end"
-    day_word_poll day_poll month_poll year_poll 
+    day_word_poll day_poll month_poll year_poll
   ))
 
 ;; Large Symbol Widget
@@ -114,7 +114,7 @@
 ;; Data Listeners & Pollers
 
 (deflisten workspaces_data
-  :initial '{"HDMI-A-2": [], "HDMI-A-1": []}' 
+  :initial '{"HDMI-A-2": [], "HDMI-A-1": []}'
   "./scripts/hyprworkspaces.sh")
 
 ;; Volume Data Listener
@@ -125,10 +125,10 @@
 (defpoll sec_poll  :interval "1s" "date +%S")
 
 ;; Date Pollers
-(defpoll day_word_poll :interval "10m" "date +%a | tr [:upper:] [:lower:]") 
-(defpoll day_poll      :interval "10m" "date +%d")                          
-(defpoll month_poll    :interval "1h"  "date +%m")                          
-(defpoll year_poll     :interval "1h"  "date +%y")                          
+(defpoll day_word_poll :interval "10m" "date +%a | tr [:upper:] [:lower:]")
+(defpoll day_poll      :interval "10m" "date +%d")
+(defpoll month_poll    :interval "1h"  "date +%m")
+(defpoll year_poll     :interval "1h"  "date +%y")
 
 ;; GPU Utilization Poller
 (defpoll gpu_poll :interval "15s"
@@ -137,14 +137,14 @@
 ;; Window Definition
 (defwindow primary_bar
   :monitor '["<primary>", "HDMI-A-2", 0]'
-  :stacking "overlay" 
+  :stacking "overlay"
   :geometry (geometry :x 0
                       :y 0
-                      :width "48px" 
+                      :width "48px"
                       :height "100%"
                       :anchor "center right")
-  :exclusive true 
-  (vbar :screen 1 :monitor "HDMI-A-2") 
+  :exclusive true
+  (vbar :screen 1 :monitor "HDMI-A-2")
 )
 
 (defwindow secondary_bar
@@ -152,7 +152,7 @@
     :stacking "overlay"
     :geometry (geometry :x 0
                         :y 0
-                        :width "48px" 
+                        :width "48px"
                         :height "100%"
                         :anchor "center left")
     :exclusive true
