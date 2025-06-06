@@ -52,6 +52,10 @@ function symlink_dotfiles() {
             mkdir -p "$parent_dir"
         fi
     fi
+    if [[ "$DRY_RUN" == true ]]; then
+        info "(dry-run) Would symlink $src -> $dest"
+        return 0
+    fi
     if [[ -L "$dest" && "$(readlink "$dest")" == "$src" ]]; then
         info "Already symlinked: $dest -> $src"
         return 0
@@ -63,10 +67,6 @@ function symlink_dotfiles() {
     fi
 
     info "Symlinking $src -> $dest"
-    if [[ "$DRY_RUN" == true ]]; then
-        success "(dry-run) Would link $src -> $dest"
-        return 0
-    fi
 
     if ln -s "$src" "$dest"; then
         success "Linked $src -> $dest"

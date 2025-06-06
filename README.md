@@ -22,6 +22,17 @@ Before running, ensure pacman is upgraded with `pacman -Syu`.
 Run `./setup.sh` to symlink the configuration files. Use `./setup.sh --dry-run`
 to preview the actions without modifying any files.
 
+## Automated Installation
+
+An install script is provided for Arch Linux systems. It installs the packages
+listed in `packages/arch.txt` and `packages/aur.txt` and then runs
+`setup.sh`.
+
+```bash
+./install.sh        # Install packages and configure
+./install.sh --dry-run  # Preview actions without making changes
+```
+
 ## Neovim
 `nvim-dap` launches `gdb` by default when debugging C or C++. On Linux the
 command `gdb` is used directly. Windows users can fall back to a MinGW

@@ -21,6 +21,20 @@
 }
 
 @test "is_arch returns true on Arch systems" {
+  run grep -q '^ID=arch' /etc/os-release
+  if [ "$status" -ne 0 ]; then
+    skip "Not running on Arch Linux"
+  fi
   run bash -c "source \"$BATS_TEST_DIRNAME/../lib/shared.sh\" && is_arch"
-  [ "$status" -ne 1 ]
+  [ "$status" -eq 0 ]
+}
+
+@test "install.sh dry run" {
+  run grep -q '^ID=arch' /etc/os-release
+  if [ "$status" -ne 0 ]; then
+    skip "Not running on Arch Linux"
+  fi
+  run bash "$BATS_TEST_DIRNAME/../install.sh" --dry-run
+  [ "$status" -eq 0 ]
+  echo "$output" | grep -q "Running setup.sh"
 }

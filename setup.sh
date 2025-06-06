@@ -51,8 +51,13 @@ symlink_dotfiles "uwsm/" "$(xdg_config_dir)" || exit 1
 symlink_dotfiles "wezterm/" "$(xdg_config_dir)" || exit 1
 symlink_dotfiles "zellij/" "$(xdg_config_dir)" || exit 1
 
-mkdir -p "$(xdg_config_dir)/wireplumber"
-mkdir -p "$(xdg_data_dir)/wireplumber"
+if [[ "$DRY_RUN" == true ]]; then
+    info "(dry-run) Would create $(xdg_config_dir)/wireplumber"
+    info "(dry-run) Would create $(xdg_data_dir)/wireplumber"
+else
+    mkdir -p "$(xdg_config_dir)/wireplumber"
+    mkdir -p "$(xdg_data_dir)/wireplumber"
+fi
 symlink_dotfiles "wireplumber/wireplumber.conf.d/" "$(xdg_config_dir)/wireplumber/" || exit 1
 symlink_dotfiles "wireplumber/scripts/" "$(xdg_data_dir)/wireplumber/" || exit 1
 # # Loose

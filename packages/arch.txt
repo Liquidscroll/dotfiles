@@ -1,0 +1,6 @@
+hyprland
+dunst
+wireplumber
+wezterm
+zellij
+starship
