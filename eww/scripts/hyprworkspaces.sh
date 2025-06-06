@@ -5,11 +5,16 @@ function get_hyprspace_workspaces() {
     wspaces_json=$(hyprctl -j workspaces)
     monitors_json=$(hyprctl -j monitors)
 
-    # get active workspaces for each monitor
+    # hyprctl exposes workspace and monitor information as JSON.
+    # The next steps merge these two sources to build a structure of
+    # workspaces grouped by monitor with extra metadata used by the eww
+    # widgets.
+    #
+    # active_ws_map maps monitor name -> active workspace id.
     local active_ws_map
     active_ws_map=$(echo "$monitors_json" | jq 'map({key: .name, value: .activeWorkspace.id}) | from_entries')
 
-    # get the id of the active workspace on the current focused monitor
+    # id of the active workspace on the currently focused monitor
     local focused_ws_id
     focused_ws_id=$(echo "$monitors_json" | jq -r '.[] | select(.focused == true) | .activeWorkspace.id // "null"')
 
@@ -34,14 +39,31 @@ function get_hyprspace_workspaces() {
 }
 
 function event_stream() {
-    local hyprland_sig sock_path
-    hyprland_sig="${HYPRLAND_INSTANCE_SIGNATURE:-}"
+    local hyprland_sig sock_path default_sock
 
-    sock_path="${XDG_RUNTIME_DIR}/hypr/${hyprland_sig}/.socket2.sock"
+    # Ensure socat is available before attempting to stream events
+    if ! command -v socat >/dev/null; then
+        echo "[ERROR] socat command not found" >&2
+        return 1
+    fi
+
+    hyprland_sig="${HYPRLAND_INSTANCE_SIGNATURE:-}"
+    default_sock="${XDG_RUNTIME_DIR}/hypr/.socket2.sock"
+
+    if [[ -n "$hyprland_sig" ]]; then
+        sock_path="${XDG_RUNTIME_DIR}/hypr/${hyprland_sig}/.socket2.sock"
+    else
+        sock_path="$default_sock"
+    fi
+
+    # Fallback to default socket if derived path doesn't exist
+    if [[ ! -S "$sock_path" && -S "$default_sock" ]]; then
+        sock_path="$default_sock"
+    fi
 
     if [[ ! -S "$sock_path" ]]; then
         echo "[ERROR] Hyprland event socket not found: $sock_path" >&2
-        exit 1
+        return 1
     fi
 
     if ! socat -u "UNIX-CONNECT:$sock_path" - ; then
