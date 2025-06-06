@@ -15,3 +15,6 @@ Contains my configurations for:
 
 At the moment this is a WIP and is intended to only be used on Arch Linux.
 Before running, ensure pacman is upgraded with `pacman -Syu`
+
+## License
+This project is dual-licensed under the MIT License or the Unlicense. See [LICENSE](LICENSE) for details.
