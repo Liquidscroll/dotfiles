@@ -1,2 +1,4 @@
 [Desktop Entry]
+# This file disables the default NetworkManager applet autostart entry.
+# nm-applet is started explicitly from Hyprland (see hypr/hyprland.conf).
 Hidden=true

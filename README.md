@@ -9,6 +9,10 @@ Contains my configurations for:
     - `hyprland.conf` & `hyprpaper.conf`
 - `zellij`
     -`config.kdl`
+- `autostart/`
+    - Minimal desktop files used to disable the default autostart of
+      `blueman-applet`, `nm-applet` and `spotify-launcher`. These applications
+      are started from Hyprland instead.
 - Spotify launcher: `spotify-launcher.conf`
 - Starship prompt: `starship.toml`
 
