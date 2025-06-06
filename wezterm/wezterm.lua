@@ -45,14 +45,4 @@ table.insert(config.keys, {
   action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
 })
 
--- Navigate between panes with SUPER+h/j/k/l
-local directions = {h = 'Left', j = 'Down', k = 'Up', l = 'Right'}
-for key, dir in pairs(directions) do
-  table.insert(config.keys, {
-    key = key,
-    mods = 'SUPER',
-    action = wezterm.action.ActivatePaneDirection(dir),
-  })
-end
-
 return config
