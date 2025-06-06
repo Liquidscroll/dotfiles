@@ -32,3 +32,10 @@ function warn() {
 function error() {
   echo -e "${RED}[ERROR]${RESET} $*"
 }
+
+# Print debug messages when _DEBUG is set to true
+function debug() {
+  if [[ "${_DEBUG}" == true ]]; then
+    echo -e "${GRAY}[DEBUG]${RESET} $*"
+  fi
+}

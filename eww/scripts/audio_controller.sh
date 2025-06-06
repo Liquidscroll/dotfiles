@@ -29,6 +29,7 @@ function get_all_sinks() {
 function is_speaker() {
     local sink_name
     sink_name=$(wpctl inspect @DEFAULT_SINK@ | grep node.description | awk -F'= ' '{gsub(/"/, ""); print $NF}')
+    debug "Default sink description: $sink_name"
     if [[ -n "$sink_name" ]]; then
         if [[ "$sink_name" == "LogitechSpeakers" ]]; then
             return 0
@@ -57,9 +58,11 @@ function set_mute_symbol() {
         fi
     fi
     eww -c "$_EWW_CONFIG_PATH" update "audio_sink_icon=${icon_to_set}"
+    debug "Updated mute icon to $icon_to_set"
 }
 
 function command_mute() {
+    debug "Toggling mute status"
     # toggle mute on default sink
     wpctl set-mute @DEFAULT_SINK@ toggle
     # get mute status
@@ -74,9 +77,11 @@ function command_mute() {
 function command_menu() {
     local sinks
     sinks=$(get_all_sinks)
+    debug "Listing available sinks"
 
     local selected_sink
     selected_sink=$(echo "$sinks" | tofi --prompt-text="Audio Devices:" --width=600 --height=400   \
+    debug "Selected sink entry: $selected_sink"
         --hide-input=true --hidden-character= --padding-top=20      \
         --padding-bottom=20 --corner-radius=10 --padding-right=100 \
         --margin-left=0)
@@ -92,12 +97,14 @@ function get_volume_percent() {
 }
 
 function command_volume() {
+    debug "Starting volume monitor"
     local last_vol=""
     while true; do
         local vol
         vol=$(get_volume_percent)
         if [[ "$vol" != "$last_vol" ]]; then
             echo "$vol"
+            debug "Volume changed to $vol"
             last_vol=$vol
         fi
         sleep 0.3
