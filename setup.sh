@@ -28,7 +28,6 @@ symlink_dotfiles "scripts/" "$(xdg_config_dir)"
 symlink_dotfiles "tofi/" "$(xdg_config_dir)"
 symlink_dotfiles "uwsm/" "$(xdg_config_dir)"
 symlink_dotfiles "wezterm/" "$(xdg_config_dir)"
-symlink_dotfiles "yazi/" "$(xdg_config_dir)"
 symlink_dotfiles "zellij/" "$(xdg_config_dir)"
 
 mkdir -p "$(xdg_config_dir)/wireplumber"

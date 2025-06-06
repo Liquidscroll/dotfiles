@@ -166,32 +166,6 @@ return {
         end,
       })
 
-      vim.diagnostic.config({
-        float = {
-          focusable = false,
-          style = "minimal",
-          border = "rounded",
-          source = true,
-          header = "",
-          prefix = "",
-        },
-      })
-      local opts = { noremap = true, silent = true, } --[[buffer = bufnr]] -- }
-      -- Go to the definition of the symbol under the cursor
-      vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = "Go to Definition", unpack(opts) })
-      -- Show information about the symbol under the cursor
-      vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = "Show Hover Information", unpack(opts) })
-      -- Go to the implementation of the symbol under the cursor
-      vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { desc = "Go to Implementation", unpack(opts) })
-      -- Rename all references to the symbol under the cursor
-      vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = "Rename Symbol", unpack(opts) })
-      -- Show available code actions for the current cursor position
-      vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = "Code Action", unpack(opts) })
-      -- List all references to the symbol under the cursor
-      vim.keymap.set('n', 'gr', vim.lsp.buf.references, { desc = "Find References", unpack(opts) })
-      -- Format the current buffer asynchronously
-      vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end,
-        { desc = "Format Buffer", unpack(opts) })
     end,
   }
 }
