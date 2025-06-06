@@ -9,52 +9,13 @@ config.tab_bar_at_bottom = true
 config.show_tab_index_in_tab_bar = true
 config.hide_tab_bar_if_only_one_tab = true
 
-config.keys = {
-    {
-        key = '1',
+config.keys = {}
+for i = 1, 9 do
+    table.insert(config.keys, {
+        key = tostring(i),
         mods = 'SUPER',
         action = wezterm.action.DisableDefaultAssignment,
-    },
-    {
-        key = '2',
-        mods = 'SUPER',
-        action = wezterm.action.DisableDefaultAssignment,
-    },
-    {
-        key = '3',
-        mods = 'SUPER',
-        action = wezterm.action.DisableDefaultAssignment,
-    },
-    {
-        key = '4',
-        mods = 'SUPER',
-        action = wezterm.action.DisableDefaultAssignment,
-    },
-    {
-        key = '5',
-        mods = 'SUPER',
-        action = wezterm.action.DisableDefaultAssignment,
-    },
-    {
-        key = '6',
-        mods = 'SUPER',
-        action = wezterm.action.DisableDefaultAssignment,
-    },
-    {
-        key = '7',
-        mods = 'SUPER',
-        action = wezterm.action.DisableDefaultAssignment,
-    },
-    {
-        key = '8',
-        mods = 'SUPER',
-        action = wezterm.action.DisableDefaultAssignment,
-    },
-    {
-        key = '9',
-        mods = 'SUPER',
-        action = wezterm.action.DisableDefaultAssignment,
-    },
-}
+    })
+end
 
 return config

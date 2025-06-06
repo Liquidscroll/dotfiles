@@ -23,8 +23,7 @@ CLASS="$1"
 shift
 
 if hyprctl -j clients | jq -e ".[] | select(.class == \"$CLASS\")" >/dev/null; then
-    curr_ws=$(hyprctl -j activeworkspace | jq '.id') 
-    echo "curr ws: $curr_ws"
+    curr_ws=$(hyprctl -j activeworkspace | jq '.id')
     hyprctl dispatch focuswindow "class:$CLASS"
     hyprctl dispatch movetoworkspace "$curr_ws"
 else

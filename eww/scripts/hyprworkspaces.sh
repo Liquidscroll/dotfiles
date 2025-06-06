@@ -57,7 +57,7 @@ echo "$output"
 
 event_stream | while IFS= read -r _event_line; do
     if ! output=$(get_hyprspace_workspaces); then
-        echo "[ERROR] Failed to generate workspace/monitor data." <&2
+        echo "[ERROR] Failed to generate workspace/monitor data." >&2
         continue
     fi
     echo "$output"
