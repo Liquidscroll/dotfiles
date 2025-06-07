@@ -4,3 +4,4 @@ wireplumber
 wezterm
 zellij
 starship
+fish

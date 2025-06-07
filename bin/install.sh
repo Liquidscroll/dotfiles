@@ -55,9 +55,9 @@ fi
 
 info "Running setup.sh..."
 if [[ "$DRY_RUN" == true ]]; then
-    ./setup.sh --dry-run
+    ./bin/setup.sh --dry-run
 else
-    ./setup.sh
+    ./bin/setup.sh
 fi
 
 success "Installation script completed."

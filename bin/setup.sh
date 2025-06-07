@@ -65,4 +65,5 @@ symlink_dotfiles "monokai_reference.json" "$(xdg_config_dir)/monokai_reference.j
 symlink_dotfiles "spotify-launcher.conf" "$(xdg_config_dir)/spotify-launcher.conf" || exit 1
 symlink_dotfiles "starship.toml" "$(xdg_config_dir)/starship.toml" || exit 1
 symlink_dotfiles ".bashrc" "$HOME/.bashrc" || exit 1
+symlink_dotfiles "fish/config.fish" "$HOME/.config/fish/config.fish" || exit 1
 success "Configuration complete."

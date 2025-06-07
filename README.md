@@ -2,9 +2,12 @@
 
 Contains my configurations for:
 - `bash/`
-    - `.bashrc` and `setup.sh`
+    - `.bashrc` and `bin/setup.sh`
     - Shared functions are found in `lib/shared.sh`
     - Colour definitions and messaging functions are found in `lib/colours.sh`
+- `fish/`
+    - `config.fish` and `bin/setup.fish`
+    - Fish utilities are in `lib/shared.fish` and `lib/colours.fish`
 - `hypr/`
     - `hyprland.conf` & `hyprpaper.conf`
 - `zellij`
@@ -19,18 +22,19 @@ Contains my configurations for:
 
 At the moment this is a WIP and is intended to only be used on Arch Linux.
 Before running, ensure pacman is upgraded with `pacman -Syu`.
-Run `./setup.sh` to symlink the configuration files. Use `./setup.sh --dry-run`
-to preview the actions without modifying any files.
+Run `./dotfiles.sh setup --shell bash` to symlink the configuration files using Bash or `--shell fish` for Fish. You can pass multiple shells as a comma separated list (for example `--shell bash,fish`). When both shells are specified the Bash script is used.
+Use the `--dry-run` flag to preview the actions without modifying any files.
 
 ## Automated Installation
 
 An install script is provided for Arch Linux systems. It installs the packages
-listed in `packages/arch.txt` and `packages/aur.txt` and then runs
-`setup.sh`.
+listed in `packages/arch.txt` and `packages/aur.txt` and then runs the
+appropriate setup script.
 
 ```bash
-./install.sh        # Install packages and configure
-./install.sh --dry-run  # Preview actions without making changes
+./dotfiles.sh install --shell bash        # Install packages and configure using Bash
+./dotfiles.sh install --shell bash,fish  # Install using Bash when both shells are requested
+./dotfiles.sh install --shell fish --dry-run  # Preview actions without making changes using Fish
 ```
 
 ## Neovim
