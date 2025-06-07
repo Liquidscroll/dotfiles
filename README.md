@@ -49,12 +49,16 @@ This project is dual-licensed under the MIT License or the Unlicense. See [LICEN
 
 ## Testing
 
-Install [Bats](https://github.com/bats-core/bats-core) and run the tests from the
-repository root:
+Tests are executed inside a Docker container based on Arch Linux. To run them
+locally, ensure Docker is installed and then execute:
 
 ```bash
-bats tests
+./scripts/run-tests.sh
 ```
+
+This script builds the container defined in the `Dockerfile` and runs `bats`.
+The same container is used in continuous integration and will be executed
+automatically on every push or pull request.
 
 The `tests/` folder also contains a `shellcheckrc` configuration which can be
 passed to ShellCheck via `--shellcheckrc tests/shellcheckrc`.
