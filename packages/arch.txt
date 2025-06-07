@@ -5,3 +5,4 @@ wezterm
 zellij
 starship
 fish
+atuin

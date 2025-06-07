@@ -14,7 +14,7 @@ set -U fish_history 10000
 # the history file. Capture the command before execution and replace it after
 # it runs if needed.
 function __capture_last_cmd --on-event fish_preexec
-    set -g __last_cmd $argv
+    set -g __last_cmd (string join ' ' $argv)
 end
 
 function __truncate_history_if_needed --on-event fish_postexec
