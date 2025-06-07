@@ -10,6 +10,20 @@ end
 # History size
 set -U fish_history 10000
 
+# Truncate extremely long commands (>500 characters) so they do not clutter
+# the history file. Capture the command before execution and replace it after
+# it runs if needed.
+function __capture_last_cmd --on-event fish_preexec
+    set -g __last_cmd $argv
+end
+
+function __truncate_history_if_needed --on-event fish_postexec
+    if test (string length -- "$__last_cmd") -gt 500
+        history delete --exact "$__last_cmd"
+        history add -- (string sub -l 500 -- "$__last_cmd")
+    end
+end
+
 # Add common paths
 add_paths "$HOME/.local/bin" "$HOME/.cache/.bun/bin"
 
