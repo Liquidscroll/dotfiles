@@ -77,6 +77,15 @@ if [[ ${#AUR_PACKAGES[@]} -gt 0 ]]; then
     fi
 fi
 
+if ! command_exists atuin; then
+    if [[ "$DRY_RUN" == true ]]; then
+        info "(dry-run) Would install Atuin via official script"
+    else
+        info "Installing Atuin via official script"
+        curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+    fi
+fi
+
 info "Running setup.sh..."
 if [[ "$DRY_RUN" == true ]]; then
     ./bin/setup.sh --dry-run

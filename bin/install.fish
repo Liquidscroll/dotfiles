@@ -74,6 +74,15 @@ if test (count $AUR_PACKAGES) -gt 0
     end
 end
 
+if not command_exists atuin
+    if test $DRY_RUN = true
+        info "(dry-run) Would install Atuin via official script"
+    else
+        info "Installing Atuin via official script"
+        curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+    end
+end
+
 info "Running setup.sh..."
 if test $DRY_RUN = true
     ./bin/setup.fish --dry-run

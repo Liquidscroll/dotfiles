@@ -50,6 +50,7 @@ symlink_dotfiles "tofi/" "$(xdg_config_dir)" || exit 1
 symlink_dotfiles "uwsm/" "$(xdg_config_dir)" || exit 1
 symlink_dotfiles "wezterm/" "$(xdg_config_dir)" || exit 1
 symlink_dotfiles "zellij/" "$(xdg_config_dir)" || exit 1
+symlink_dotfiles "atuin/" "$(xdg_config_dir)" || exit 1
 
 if [[ "$DRY_RUN" == true ]]; then
     info "(dry-run) Would create $(xdg_config_dir)/wireplumber"

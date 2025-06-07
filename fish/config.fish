@@ -55,5 +55,9 @@ end
 # start ssh agent
 ssh-agent -c | source
 
+if command_exists atuin
+    atuin init fish --disable-up-arrow | source
+end
+
 # starship prompt
 starship init fish | source

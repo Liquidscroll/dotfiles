@@ -18,6 +18,7 @@ Contains my configurations for:
       are started from Hyprland instead.
 - Spotify launcher: `spotify-launcher.conf`
 - Starship prompt: `starship.toml`
+- Atuin shell history: `atuin/config.toml` (installed via `curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh`)
 
 
 At the moment this is a WIP and is intended to only be used on Arch Linux.

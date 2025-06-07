@@ -10,6 +10,6 @@ IMAGE_NAME="dotfiles-test"
 
 docker build -t "$IMAGE_NAME" .
 
-# Run tests
+# Run install scripts then tests
 
-docker run --rm "$IMAGE_NAME"
+docker run --rm "$IMAGE_NAME" bash -c "./dotfiles.sh install --shell bash && ./dotfiles.sh install --shell fish && bats tests"

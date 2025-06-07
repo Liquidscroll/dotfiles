@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 #
 # ~/.bashrc
 #
@@ -7,6 +8,7 @@
 
 # Source shared funcs.
 if [ -f "$HOME/.config/lib/shared.sh" ]; then
+    # shellcheck source=/dev/null
     source "$HOME/.config/lib/shared.sh"
 else
     echo "Shared bash library at $HOME/.config/lib/shared.sh not found."
@@ -19,6 +21,9 @@ HISTFILESIZE=20000
 shopt -s histappend # Append to the history file, don't overwrite it
 shopt -s checkwinsize # Handle terminal resizing
 
+if command_exists atuin; then
+    eval "$(atuin init bash --disable-up-arrow)"
+fi
 
 # Save and reload history after each command and before displaying the prompt.
 # Also truncate commands longer than 500 characters so the history file does not
@@ -29,6 +34,7 @@ __truncate_history_if_needed() {
     last=$(history 1)
     local id="${last%% *}"
     local cmd
+    # shellcheck disable=SC2001
     cmd=$(echo "$last" | sed -e 's/^ *[0-9]* *//')
     if (( ${#cmd} > 500 )); then
         history -d "$id"
@@ -76,6 +82,7 @@ else
 fi
 
 
+# shellcheck source=/dev/null
 [ -s "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 
 # start ssh agent
@@ -83,3 +90,6 @@ eval "$(ssh-agent)"
 
 # start starship
 eval "$(starship init bash)"
+
+# shellcheck source=/dev/null
+. "$HOME/.atuin/bin/env"
