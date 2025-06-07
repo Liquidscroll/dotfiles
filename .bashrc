@@ -25,30 +25,11 @@ if command_exists atuin; then
     eval "$(atuin init bash --disable-up-arrow)"
 fi
 
-<<<<<<< ours
-=======
-
->>>>>>> theirs
 # Save and reload history after each command and before displaying the prompt.
 # Also truncate commands longer than 500 characters so the history file does not
 # get filled with extremely long entries. Prepend to existing PROMPT_COMMAND in
 # case other tools (like Starship) also use it.
 __truncate_history_if_needed() {
-<<<<<<< ours
-    local last
-    last=$(history 1)
-    local id="${last%% *}"
-    local cmd
-    # shellcheck disable=SC2001
-    cmd=$(echo "$last" | sed -e 's/^ *[0-9]* *//')
-    if (( ${#cmd} > 500 )); then
-        history -d "$id"
-        history -s "${cmd:0:500}"
-        history -a
-    fi
-}
-PROMPT_COMMAND="history -a; history -n; __truncate_history_if_needed${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
-=======
     local last id cmd
     last=$(history 1)
     id="${last%% *}"
@@ -59,7 +40,6 @@ PROMPT_COMMAND="history -a; history -n; __truncate_history_if_needed${PROMPT_COM
     fi
 }
 PROMPT_COMMAND="__truncate_history_if_needed; history -a; history -n${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
->>>>>>> theirs
 
 
 add_paths "$HOME/.local/bin" "$HOME/.cache/.bun/bin"

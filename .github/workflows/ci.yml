@@ -12,12 +12,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build Docker image
         run: docker build -t dotfiles-test .
-<<<<<<< ours
-      - name: Install using bash and fish
-        run: docker run --rm dotfiles-test bash -c "./dotfiles.sh install --shell bash && ./dotfiles.sh install --shell fish"
-=======
       - name: Install scripts dry run
         run: docker run --rm dotfiles-test bash -c "./dotfiles.sh install --shell bash --dry-run && ./dotfiles.sh install --shell fish --dry-run"
->>>>>>> theirs
       - name: Run tests
         run: docker run --rm dotfiles-test
