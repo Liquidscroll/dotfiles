@@ -1,7 +1,7 @@
 # Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
 
-format = '$username $directory $fill $jobs$time $git_branch$line_break$character'
+format = '$shell$username $directory $fill $jobs$time $git_branch$line_break$character'
 
 
 # Inserts a blank line between shell prompts
@@ -12,6 +12,12 @@ palette = 'my_monokai'
 [character]
 success_symbol = '[\$](bold green)'
 error_symbol = '[✗](bold red)'
+
+[shell]
+unknown_indicator = "???"
+format = '[\[$indicator\]]($style)'
+style = 'green'
+disabled = false
 
 [directory]
 style = 'cyan'
@@ -70,21 +76,21 @@ disabled = true
 # black = "#1e2024"
 
 
-black =   "#48483e"
-red =   "#dc2566"
-green =   "#8fc029"
-yellow =   "#d4c96e"
-blue =   "#55bcce"
-purple =   "#9358fe"
-cyan =   "#56b7a5"
-white =   "#acada1"
-gray =   "#76715e"
-light-red =   "#fa2772"
-light-green =   "#a7e22e"
-light-yellow =   "#e7db75"
-light-blue =   "#66d9ee"
-light-purple =   "#ae82ff"
-light-cyan =   "#66efd5"
-light-white =   "#cfd0c2"
+black = "#48483e"
+red = "#dc2566"
+green = "#8fc029"
+yellow = "#d4c96e"
+blue = "#55bcce"
+purple = "#9358fe"
+cyan = "#56b7a5"
+white = "#acada1"
+gray = "#76715e"
+light-red = "#fa2772"
+light-green = "#a7e22e"
+light-yellow = "#e7db75"
+light-blue = "#66d9ee"
+light-purple = "#ae82ff"
+light-cyan = "#66efd5"
+light-white = "#cfd0c2"
 fg = "#f1ebeb"
 bg = "#272822"

@@ -38,11 +38,6 @@ else
     set -gx FZF_DEFAULT_OPTS "--preview 'head -n 200 {}' --bind 'f3:toggle-preview'"
 end
 
-# Cargo environment
-if test -s "$HOME/.cargo/env"
-    source "$HOME/.cargo/env"
-end
-
 # start ssh agent
 ssh-agent -c | source
 

@@ -32,23 +32,47 @@ readarray -t ARCH_PACKAGES < <(grep -vE '^\s*(#|$)' "$ARCH_LIST" 2>/dev/null)
 readarray -t AUR_PACKAGES < <(grep -vE '^\s*(#|$)' "$AUR_LIST" 2>/dev/null)
 
 if [[ ${#ARCH_PACKAGES[@]} -gt 0 ]]; then
-    if [[ "$DRY_RUN" == true ]]; then
-        info "(dry-run) Would install pacman packages: ${ARCH_PACKAGES[*]}"
-    else
-        info "Installing pacman packages: ${ARCH_PACKAGES[*]}"
-        sudo pacman -S --needed "${ARCH_PACKAGES[@]}" && success "Pacman packages installed." || error "Failed to install pacman packages."
+    to_install=()
+    for pkg in "${ARCH_PACKAGES[@]}"; do
+        if package_installed "$pkg"; then
+            info "$pkg already installed. Skipping."
+        elif conflicting_package_installed "$pkg"; then
+            info "A conflicting package for $pkg is installed. Skipping."
+        else
+            to_install+=("$pkg")
+        fi
+    done
+    if [[ ${#to_install[@]} -gt 0 ]]; then
+        if [[ "$DRY_RUN" == true ]]; then
+            info "(dry-run) Would install pacman packages: ${to_install[*]}"
+        else
+            info "Installing pacman packages: ${to_install[*]}"
+            sudo pacman -S --needed "${to_install[@]}" && success "Pacman packages installed." || error "Failed to install pacman packages."
+        fi
     fi
 fi
 
 if [[ ${#AUR_PACKAGES[@]} -gt 0 ]]; then
-    if [[ "$DRY_RUN" == true ]]; then
-        info "(dry-run) Would install AUR packages: ${AUR_PACKAGES[*]}"
-    else
-        if command_exists yay; then
-            info "Installing AUR packages: ${AUR_PACKAGES[*]}"
-            yay -S "${AUR_PACKAGES[@]}" && success "AUR packages installed." || error "Failed to install AUR packages."
+    aur_to_install=()
+    for pkg in "${AUR_PACKAGES[@]}"; do
+        if package_installed "$pkg"; then
+            info "$pkg already installed. Skipping."
+        elif conflicting_package_installed "$pkg"; then
+            info "A conflicting package for $pkg is installed. Skipping."
         else
-            error "'yay' is required to install AUR packages."
+            aur_to_install+=("$pkg")
+        fi
+    done
+    if [[ ${#aur_to_install[@]} -gt 0 ]]; then
+        if [[ "$DRY_RUN" == true ]]; then
+            info "(dry-run) Would install AUR packages: ${aur_to_install[*]}"
+        else
+            if command_exists yay; then
+                info "Installing AUR packages: ${aur_to_install[*]}"
+                yay -S "${aur_to_install[@]}" && success "AUR packages installed." || error "Failed to install AUR packages."
+            else
+                error "'yay' is required to install AUR packages."
+            fi
         fi
     fi
 fi

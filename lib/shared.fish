@@ -134,3 +134,13 @@ function xdg_data_dir
         echo "$HOME/.local/share"
     end
 end
+
+# Check if a package is installed
+function package_installed
+    pacman -Qq $argv[1] >/dev/null 2>&1
+end
+
+# Check if a conflicting package with the same base name is installed
+function conflicting_package_installed
+    pacman -Qq | grep -q "^$argv[1]-"
+end

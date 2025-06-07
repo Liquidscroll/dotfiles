@@ -29,23 +29,47 @@ set -l ARCH_PACKAGES (grep -vE '^\s*(#|$)' $ARCH_LIST 2>/dev/null)
 set -l AUR_PACKAGES (grep -vE '^\s*(#|$)' $AUR_LIST 2>/dev/null)
 
 if test (count $ARCH_PACKAGES) -gt 0
-    if test $DRY_RUN = true
-        info "(dry-run) Would install pacman packages: $ARCH_PACKAGES"
-    else
-        info "Installing pacman packages: $ARCH_PACKAGES"
-        sudo pacman -S --needed $ARCH_PACKAGES; and success "Pacman packages installed."; or error "Failed to install pacman packages."
+    set to_install
+    for pkg in $ARCH_PACKAGES
+        if package_installed $pkg
+            info "$pkg already installed. Skipping."
+        else if conflicting_package_installed $pkg
+            info "A conflicting package for $pkg is installed. Skipping."
+        else
+            set -a to_install $pkg
+        end
+    end
+    if test (count $to_install) -gt 0
+        if test $DRY_RUN = true
+            info "(dry-run) Would install pacman packages: $to_install"
+        else
+            info "Installing pacman packages: $to_install"
+            sudo pacman -S --needed $to_install; and success "Pacman packages installed."; or error "Failed to install pacman packages."
+        end
     end
 end
 
 if test (count $AUR_PACKAGES) -gt 0
-    if test $DRY_RUN = true
-        info "(dry-run) Would install AUR packages: $AUR_PACKAGES"
-    else
-        if command_exists yay
-            info "Installing AUR packages: $AUR_PACKAGES"
-            yay -S $AUR_PACKAGES; and success "AUR packages installed."; or error "Failed to install AUR packages."
+    set aur_to_install
+    for pkg in $AUR_PACKAGES
+        if package_installed $pkg
+            info "$pkg already installed. Skipping."
+        else if conflicting_package_installed $pkg
+            info "A conflicting package for $pkg is installed. Skipping."
         else
-            error "'yay' is required to install AUR packages."
+            set -a aur_to_install $pkg
+        end
+    end
+    if test (count $aur_to_install) -gt 0
+        if test $DRY_RUN = true
+            info "(dry-run) Would install AUR packages: $aur_to_install"
+        else
+            if command_exists yay
+                info "Installing AUR packages: $aur_to_install"
+                yay -S $aur_to_install; and success "AUR packages installed."; or error "Failed to install AUR packages."
+            else
+                error "'yay' is required to install AUR packages."
+            end
         end
     end
 end

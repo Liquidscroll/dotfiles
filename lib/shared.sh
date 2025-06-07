@@ -135,3 +135,13 @@ function xdg_config_dir() {
 function xdg_data_dir() {
   echo "${XDG_DATA_HOME:-$HOME/.local/share}"
 }
+
+# Check if a package is installed
+function package_installed() {
+    pacman -Qq "$1" >/dev/null 2>&1
+}
+
+# Check if a conflicting package with the same base name is installed
+function conflicting_package_installed() {
+    pacman -Qq | grep -q "^$1-"
+}
