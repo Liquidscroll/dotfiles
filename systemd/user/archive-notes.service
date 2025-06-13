@@ -1,0 +1,6 @@
+[Unit]
+Description=Archive temp notes older than 7 dates
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/archive_notes.sh

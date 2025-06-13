@@ -39,18 +39,18 @@ info "Symlinking configuration files..."
 
 # In Folders
 
-symlink_dotfiles "autostart/" "$(xdg_config_dir)" || exit 1
-symlink_dotfiles "dunst/" "$(xdg_config_dir)" || exit 1
-symlink_dotfiles "eww/" "$(xdg_config_dir)" || exit 1
-symlink_dotfiles "hypr/" "$(xdg_config_dir)" || exit 1
-symlink_dotfiles "lib/" "$(xdg_config_dir)" || exit 1
-symlink_dotfiles "nvim/" "$(xdg_config_dir)" || exit 1
-symlink_dotfiles "scripts/" "$(xdg_config_dir)" || exit 1
-symlink_dotfiles "tofi/" "$(xdg_config_dir)" || exit 1
-symlink_dotfiles "uwsm/" "$(xdg_config_dir)" || exit 1
-symlink_dotfiles "wezterm/" "$(xdg_config_dir)" || exit 1
-symlink_dotfiles "zellij/" "$(xdg_config_dir)" || exit 1
-symlink_dotfiles "atuin/" "$(xdg_config_dir)" || exit 1
+symlink_dotfiles "autostart/" "$(xdg_config_dir)" 
+symlink_dotfiles "dunst/" "$(xdg_config_dir)" 
+symlink_dotfiles "eww/" "$(xdg_config_dir)" 
+symlink_dotfiles "hypr/" "$(xdg_config_dir)" 
+symlink_dotfiles "lib/" "$(xdg_config_dir)" 
+symlink_dotfiles "nvim/" "$(xdg_config_dir)" 
+symlink_dotfiles "scripts/" "$(xdg_config_dir)" 
+symlink_dotfiles "tofi/" "$(xdg_config_dir)" 
+symlink_dotfiles "uwsm/" "$(xdg_config_dir)" 
+symlink_dotfiles "wezterm/" "$(xdg_config_dir)" 
+symlink_dotfiles "zellij/" "$(xdg_config_dir)" 
+# symlink_dotfiles "atuin/" "$(xdg_config_dir)" 
 
 if [[ "$DRY_RUN" == true ]]; then
     info "(dry-run) Would create $(xdg_config_dir)/wireplumber"
@@ -59,12 +59,20 @@ else
     mkdir -p "$(xdg_config_dir)/wireplumber"
     mkdir -p "$(xdg_data_dir)/wireplumber"
 fi
-symlink_dotfiles "wireplumber/wireplumber.conf.d/" "$(xdg_config_dir)/wireplumber/" || exit 1
-symlink_dotfiles "wireplumber/scripts/" "$(xdg_data_dir)/wireplumber/" || exit 1
+symlink_dotfiles "wireplumber/wireplumber.conf.d/" "$(xdg_config_dir)/wireplumber/" 
+symlink_dotfiles "wireplumber/scripts/" "$(xdg_data_dir)/wireplumber/" 
 # # Loose
-symlink_dotfiles "monokai_reference.json" "$(xdg_config_dir)/monokai_reference.json" || exit 1
-symlink_dotfiles "spotify-launcher.conf" "$(xdg_config_dir)/spotify-launcher.conf" || exit 1
-symlink_dotfiles "starship.toml" "$(xdg_config_dir)/starship.toml" || exit 1
-symlink_dotfiles ".bashrc" "$HOME/.bashrc" || exit 1
-symlink_dotfiles "fish/config.fish" "$HOME/.config/fish/config.fish" || exit 1
+symlink_dotfiles "monokai_reference.json" "$(xdg_config_dir)/monokai_reference.json" 
+symlink_dotfiles "spotify-launcher.conf" "$(xdg_config_dir)/spotify-launcher.conf" 
+symlink_dotfiles "starship.toml" "$(xdg_config_dir)/starship.toml" 
+symlink_dotfiles ".bashrc" "$HOME/.bashrc" 
+symlink_dotfiles "scripts/archive_notes.sh" "$HOME/.local/bin/archive_notes.sh" 
+if [[ "$DRY_RUN" == true ]]; then
+    info "(dry-run) Would create $(xdg_config_dir)/systemd/user/"
+else
+    mkdir -p "$(xdg_config_dir)/systemd/user/"
+fi
+symlink_dotfiles "systemd/user/archive-notes.service" "$(xdg_config_dir)/systemd/user/archive-notes.service" 
+symlink_dotfiles "systemd/user/archive-notes.timer" "$(xdg_config_dir)/systemd/user/archive-notes.timer" 
+symlink_dotfiles "fish/config.fish" "$(xdg_config_dir)/fish/config.fish" 
 success "Configuration complete."

@@ -53,6 +53,8 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
 
+alias ils='timg --grid=4x2 --upscale --center --title'
+
 # Prevent shell redirection overwriting files
 # note: use |> to overwrite instead of >
 set -o noclobber

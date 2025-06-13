@@ -1,0 +1,10 @@
+[Unit]
+Description=Run note archival every 14 days
+
+[Timer]
+OnBootSec=10m
+OnUnitActiveSec=14d
+Persistent=true
+
+[Install]
+WantedBy=default.target
