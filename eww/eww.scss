@@ -130,6 +130,42 @@ window {
   }
 }
 
+.mic-metric {
+  background-color: $background2;
+  padding: 0;
+  border-radius: 4px;
+
+  scale {
+    margin-bottom: 5px;
+
+    trough {
+      all: unset;
+      background-color: $monokai1;
+      min-width: 34px;
+      min-height: 3px;
+      border-radius: 2px;
+
+      highlight {
+        all: unset;
+        background-color: $monokai-red;
+        border-bottom-right-radius: 5px;
+      }
+    }
+  }
+
+  .audio-source-button {
+    color: $monokai-red;
+  }
+
+  .mic-percent-button {
+    color: $foreground0;
+  }
+
+  slider {
+    all: unset;
+  }
+}
+
 // Metric Widgets
 .metric-container {
   // For boxes grouping multiple metrics

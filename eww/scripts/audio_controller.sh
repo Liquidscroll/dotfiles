@@ -8,6 +8,8 @@ _SPEAKER_SYMBOL=""
 _SPEAKER_SYMBOL_MUTE=""
 _HEADSET_SYMBOL="󰋋"
 _HEADSET_SYMBOL_MUTE="󰟎"
+_MIC_SYMBOL_MUTE=""
+_MIC_SYMBOL=""
 _EWW_CONFIG_PATH="${HOME}/.config/eww/"
 
 function get_all_sinks() {
@@ -22,6 +24,22 @@ function get_all_sinks() {
         gsub(/ /, "", arr[2]);
         if(arr[2] == "") exit;
         printf "%d | %s\n", arr[1], arr[2];
+    }
+    '
+}
+
+function get_all_sources() {
+    local output
+    output=$(wpctl status)
+    echo "$output" | awk '
+    BEGIN { in_src=0 }
+    /Sources:/ { in_src=1; next }
+    /Apps:/ { if(in_src) exit}
+    in_src && NF > 0 {
+        match($0, /.?([0-9]+)\. (.*)\[/, arr);
+        gsub(/ /, "", arr[2]);
+        if(arr[2] == "") exit;
+        printf "%d | $s\n", arr[1], arr[2];
     }
     '
 }
@@ -42,26 +60,67 @@ function is_speaker() {
 }
 
 function set_mute_symbol() {
-    local set_muted=$1 # true or false
+    local target
+    target=$1
+    local set_muted
+    set_muted=$2 # true or false
     local icon_to_set
-    if is_speaker; then
-        if [[ $set_muted == true ]]; then
-            icon_to_set=$_SPEAKER_SYMBOL_MUTE
-        else
-            icon_to_set=$_SPEAKER_SYMBOL
-        fi
-    else
-        if [[ $set_muted == true ]]; then
-            icon_to_set=$_HEADSET_SYMBOL_MUTE
-        else
-            icon_to_set=$_HEADSET_SYMBOL
-        fi
-    fi
-    eww -c "$_EWW_CONFIG_PATH" update "audio_sink_icon=${icon_to_set}"
-    debug "Updated mute icon to $icon_to_set"
+    case "$target" in
+        output)
+            if is_speaker; then
+                if [[ $set_muted == true ]]; then
+                    icon_to_set=$_SPEAKER_SYMBOL_MUTE
+                else
+                    icon_to_set=$_SPEAKER_SYMBOL
+                fi
+            else
+                if [[ $set_muted == true ]]; then
+                    icon_to_set=$_HEADSET_SYMBOL_MUTE
+                else
+                    icon_to_set=$_HEADSET_SYMBOL
+                fi
+            fi
+            eww -c "$_EWW_CONFIG_PATH" update "audio_sink_icon=${icon_to_set}"
+        ;;
+        input)
+            if [[ $set_muted == true ]]; then
+                icon_to_set=$_MIC_SYMBOL_MUTE
+            else
+                icon_to_set=$_MIC_SYMBOL
+            fi
+            eww -c "$_EWW_CONFIG_PATH" update "audio_source_icon=${icon_to_set}"
+        ;;
+    esac
+    debug "Updated mute icon for $target to $icon_to_set"
 }
 
 function command_mute() {
+    local target="${1:-output}"
+    debug "Toggling mute status for $target"
+
+    local audio_target
+    case "$target" in
+        input)
+            audio_target=@DEFAULT_SOURCE@
+            ;;
+        output)
+            audio_target=@DEFAULT_SINK@
+            ;;
+    esac
+    # toggle mute on target
+    wpctl set-mute $audio_target toggle
+    # get mute status
+    # if muted will contain MUTED
+    if wpctl get-volume $audio_target | grep -q MUTED; then
+        set_mute_symbol "$target" true
+    else
+        set_mute_symbol "$target" false
+    fi
+            
+}
+
+# TODO: remove this once command_mute is done above
+function command_mute_audio_only() {
     debug "Toggling mute status"
     # toggle mute on default sink
     wpctl set-mute @DEFAULT_SINK@ toggle
@@ -75,6 +134,30 @@ function command_mute() {
 }
 
 function command_menu() {
+    local target
+    target="${1-output}"
+    local devices prompt
+    if [[ "$target" == "input" ]]; then
+        devices=$(get_all_sources)
+        prompt="Input Devices:"
+    else
+        devices=$(get_all_sinks)
+        prompt="Output Devices:"
+    fi
+    debug "Listing available $target devices."
+
+    local selected
+    selected=$(echo "$devices" | tofi --prompt-text="$prompt" --width=600 --height=400 \
+                --hide-input=true --hidden-character= --padding-top=20 --padding-bottom=20 \
+                --corner-radius=10 --padding-right=100 --margin-left=0)
+
+    debug "Selected $target entry: $selected"
+
+    wpctl set-default "$(echo "$selected" | cut -d'|' -f1)"
+}
+
+# TODO: remove this once command_menu is finished above
+function command_menu_old() {
     local sinks
     sinks=$(get_all_sinks)
     debug "Listing available sinks"
@@ -91,17 +174,35 @@ function command_menu() {
 }
 
 function get_volume_percent() {
+    local target
+    target="${1:-output}"
+    local volume
+    case "$target" in
+        input)
+            volume=$(wpctl get-volume @DEFAULT_SOURCE@)
+            ;;
+        output)
+            volume=$(wpctl get-volume @DEFAULT_SINK@)
+            ;;
+    esac
+    echo "$volume" | awk '{print $2 * 100}'
+}
+
+# TODO: remove this once get_volume_percent is done above
+function get_volume_percent_old() {
     local volume
     volume=$(wpctl get-volume @DEFAULT_SINK@)
     echo "$volume" | awk '{print $2 * 100}'
 }
 
 function command_volume() {
-    debug "Starting volume monitor"
+    local target
+    target="${1:-output}"
+    debug "Starting volume monitor for $target"
     local last_vol=""
     while true; do
         local vol
-        vol=$(get_volume_percent)
+        vol=$(get_volume_percent "$target")
         if [[ "$vol" != "$last_vol" ]]; then
             echo "$vol"
             debug "Volume changed to $vol"
@@ -126,8 +227,8 @@ if [[ -z "$COMMAND" ]]; then
     echo "Usage: $0 [--debug|-d] <command> [command_args...]"
     echo "Available commands:"
     echo "  volume                Continuously monitors and prints volume percentage."
-    echo "  mute                  Toggles mute status of the default sink and updates Eww icon."
-    echo "  menu                  Displays a Tofi menu to select the default audio sink."
+    echo "  mute [input|output]   Toggles mute on the default source or sink (default output)."
+    echo "  menu [input|output]   Displays a Tofi menu to select the default device." 
     exit 1
 fi
 

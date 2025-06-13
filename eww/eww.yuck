@@ -7,7 +7,7 @@
 (defvar bar_width 48)       ;; Defines the width of the main vertical bar.
 ;(defvar half_bar_width "24px")  ;; Defines half the width of the bar (currently unused but kept for potential future use).
 (defvar audio_sink_icon "")    ;; Icon representing the current audio sink.
-
+(defvar audio_source_icon "")
 ;; Main Vertical Bar Structure
 (defwidget vbar [screen monitor]
   (centerbox :orientation "v"
@@ -54,6 +54,7 @@
 (defwidget bottom_segment [screen]
   (box :orientation "v" :valign "end" :space-evenly false :spacing "5"
     (metric_group :screen screen
+    (mic_widget)
     (volume_widget)
     (box :orientation "h" :space-evenly true :class "metric-container"
       (metric_widget :icon "" :font-size 1 ; Disk icon
@@ -64,7 +65,7 @@
       (metric_widget :icon "󰻠" :font-size 1 ; CPU icon
         "${round(EWW_CPU.avg, 0)}%")
       (metric_widget :icon "󰘚" :font-size 1 ; GPU icon
-        gpu_poll))
+        "${gpu_poll}%"))
     )
       (date_widget))
 )
@@ -92,14 +93,36 @@
         ;;; TODO?:
         ; Generalise this, so that I can reuse it for microphone later on.
         (button :class "audio-sink-button"
-                :onclick "./scripts/audio_controller.sh mute"
-                :onrightclick "./scripts/audio_controller.sh menu"
+                :onclick "./scripts/audio_controller.sh mute output"
+                :onrightclick "./scripts/audio_controller.sh menu output"
           audio_sink_icon)
         ;; Button to open pavucontrol and display current volume percentage
         ;; TODO?: Make this a slider that pops out on click
         (button :class "volume-percent-button"
                 :onclick "pavucontrol &"
           "${current_volume_poll}%")))))
+
+(defwidget mic_widget []
+  (box :orientation "v" :class "mic-metric" :space-evenly false :valign "fill" :vexpand false
+    ;; Volume slider
+    (scale :orientation "h" :min 0 :max 101 :value current_mic_poll
+           :onchange "wpctl set-volume -l 1 @DEFAULT_AUDIO_SOURCE@ $(echo {} | sed 's/\\..*//g')%")
+    ;; Eventbox for scroll-based volume adjustment and buttons
+    (eventbox
+      :onscroll "if [[ '{}' == 'up' ]]; then wpctl set-volume -l 1 @DEFAULT_AUDIO_SOURCE@ 2.5%+; else wpctl set-volume -l 1 @DEFAULT_AUDIO_SOURCE@ 2.5%-; fi"
+      :vexpand true :valign "fill"
+      (box :orientation "v" :valign "fill" :vexpand true
+        ;;; TODO?:
+        ; Generalise this, so that I can reuse it for microphone later on.
+        (button :class "audio-source-button"
+                :onclick "./scripts/audio_controller.sh mute input"
+                :onrightclick "./scripts/audio_controller.sh menu input"
+          audio_source_icon)
+        ;; Button to open pavucontrol and display current volume percentage
+        ;; TODO?: Make this a slider that pops out on click
+        (button :class "mic-percent-button"
+                :onclick "pavucontrol &"
+          "${current_mic_poll}%")))))
 
 ;; Date Widget
 (defwidget date_widget []
@@ -118,7 +141,8 @@
   "./scripts/hyprworkspaces.sh")
 
 ;; Volume Data Listener
-(deflisten current_volume_poll :initial "0" "./scripts/audio_controller.sh volume")
+(deflisten current_volume_poll :initial "0" "./scripts/audio_controller.sh volume output")
+(deflisten current_mic_poll :initial "0" "./scripts/audio_controller.sh volume input")
 ;; Time Pollers
 (defpoll hour_poll :interval "1s" "date +%H")
 (defpoll min_poll  :interval "1s" "date +%M")
@@ -131,8 +155,8 @@
 (defpoll year_poll     :interval "1h"  "date +%y")
 
 ;; GPU Utilization Poller
-(defpoll gpu_poll :interval "15s"
-  "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader | awk '{printf(\"%s%\", $1)}'")
+(defpoll gpu_poll :interval "1s"
+  "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits") 
 
 ;; Window Definition
 (defwindow primary_bar
