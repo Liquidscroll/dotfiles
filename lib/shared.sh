@@ -145,3 +145,39 @@ function package_installed() {
 function conflicting_package_installed() {
     pacman -Qq | grep -q "^$1-"
 }
+
+function note() {
+    local dir="$HOME/.notes"
+    mkdir -p "$dir"
+
+    # grab everything after "note" as the label
+    local label="$*"
+
+    #slugify: replace spaces with -, drop anything that isn't alnum or -
+    local slug=""
+    if [[ -n "$label" ]]; then
+        slug=$(printf '%s' "$label" |
+                tr '[:upper:]' '[:lower:]' |
+                tr '[:space:]' '-' |
+                tr -cd '[:alnum:]-')
+        slug="-${slug}" # prepend leading dash
+    fi
+
+    local datetime
+    local file
+    datetime=$(date +%F-%H%M%S)
+    file="$dir/$datetime-note${slug}.md"
+
+    {
+        if [[ -n "$label" ]]; then
+            printf '# %s\n' "$label"
+            printf '### %s\n' "$datetime"
+        else
+            printf '# note-%s\n' "$datetime"
+        fi
+        printf '## TODO\n'
+        printf '  -'
+    } > "$file"
+
+    "${EDITOR:-nano}" "$file"
+}
