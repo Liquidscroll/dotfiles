@@ -1,94 +1,71 @@
-# shellcheck shell=bash
-#
-# ~/.bashrc
-#
+# shellcheck shell=bash            # Tell ShellCheck this is a Bash script
+# ~/.bashrc                        # Personal interactive-shell startup file
 
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+[[ $- != *i* ]] && return          # Exit early if the shell is non-interactive
 
-# Source shared funcs.
-if [ -f "$HOME/.config/lib/shared.sh" ]; then
-    # shellcheck source=/dev/null
-    source "$HOME/.config/lib/shared.sh"
+# ── Load shared helper functions ───────────────────────────────────────────────
+if [ -f "$HOME/.config/lib/shared.sh" ]; then  # If shared lib exists…
+# shellcheck source="/home/liquidscroll/.config/lib/shared.sh"
+  . "$HOME/.config/lib/shared.sh"              # …source it
 else
-    echo "Shared bash library at $HOME/.config/lib/shared.sh not found."
+  echo "Shared bash library at $HOME/.config/lib/shared.sh not found."  # Warn if missing
 fi
 
-HISTCONTROL=ignoreboth:erasedups # ignoreboth (ignoredups & ignorespace), erasedups (better than ignoredups)
-HISTSIZE=10000
-HISTFILESIZE=20000
+# ── Shell options ─────────────────────────────────────────────────────────────
+shopt -s histappend checkwinsize    # Append to history & fix line-wrapping resize
+set -o noclobber                    # Prevent accidental file overwrite with >
 
-shopt -s histappend # Append to the history file, don't overwrite it
-shopt -s checkwinsize # Handle terminal resizing
+# ── History configuration ─────────────────────────────────────────────────────
+HISTCONTROL=ignoreboth:erasedups    # Skip dupes/leading-space cmds & erase dups
+HISTSIZE=10000                      # Lines kept in memory
+HISTFILESIZE=20000                  # Lines kept on disk
 
-if command_exists atuin; then
-    eval "$(atuin init bash --disable-up-arrow)"
-fi
-
-# Save and reload history after each command and before displaying the prompt.
-# Also truncate commands longer than 500 characters so the history file does not
-# get filled with extremely long entries. Prepend to existing PROMPT_COMMAND in
-# case other tools (like Starship) also use it.
+# Truncate any history entry longer than 500 chars
 __truncate_history_if_needed() {
-    local last id cmd
-    last=$(history 1)
-    id="${last%% *}"
-    cmd=${last#* }
-    if (( ${#cmd} > 500 )); then
-        history -d "$id"
-        history -s "${cmd:0:500}"
-    fi
+  local last id cmd
+  last=$(history 1)                 # Get last history entry
+  id=${last%% *}                    # Extract entry ID
+  cmd=${last#* }                    # Extract full command
+  (( ${#cmd} > 500 )) && {          # If command too long…
+    history -d "$id"                # …delete old entry
+    history -s "${cmd:0:500}"       # …re-add trimmed entry
+  }
 }
-PROMPT_COMMAND="__truncate_history_if_needed; history -a; history -n${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
 
+# Run history sync + truncation before each prompt
+PROMPT_COMMAND="history -a; history -n; __truncate_history_if_needed${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
 
-add_paths "$HOME/.local/bin" "$HOME/.cache/.bun/bin"
-# --- Aliases ---
-# General ls
-alias ls='ls --color=auto -F --group-directories-first'
-alias ll='ls -lh'
-alias la='ls -A' # Show hidden files
+# ── Path tweaks ───────────────────────────────────────────────────────────────
+add_paths "$HOME/.cache/.bun/bin"    # Add Bun’s cached binaries to PATH
 
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -i'
+# ── Aliases ───────────────────────────────────────────────────────────────────
+alias ls='ls --color=auto -F --group-directories-first'  # Color + mark + group dirs
+alias ll='ls -lh'                                        # Long list, human sizes
+alias la='ls -A'                                         # Show hidden files
+alias cp='cp -i'                                         # Prompt before overwrite
+alias mv='mv -i'                                         # Prompt before move
+alias rm='rm -i'                                         # Prompt before delete
 
-alias ils='timg --grid=4x2 --upscale --center --title'
+# Image and search helpers
+command -v timg >/dev/null && \
+  alias ils='timg --grid=4x2 --upscale --center --title' # Image grid preview
 
-# Prevent shell redirection overwriting files
-# note: use |> to overwrite instead of >
-set -o noclobber
+command -v rg   >/dev/null && alias grep='rg'            # Use ripgrep for grep
+command -v nvimpager >/dev/null && export PAGER=nvimpager  # Use nvimpager as pager
 
-if command_exists rg; then
-    alias grep='rg'
-fi
-
-if command_exists nvimpager; then
-    export PAGER="nvimpager"
-else
-    export PAGER="less"
-fi
-
-if command_exists fzf; then
+# ── FZF configuration ─────────────────────────────────────────────────────────
+if command -v fzf >/dev/null; then
+    # Default file list: include hidden, exclude .git & node_modules
     export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!{.git,node_modules}/*"'
+    if command -v bat >/dev/null; then
+        # Preview with bat if available
+        export FZF_DEFAULT_OPTS="--preview 'bat --style=numbers --color=always --line-range :500 {}' --bind 'f3:toggle-preview'"
+    else
+        # Fallback preview with head
+        export FZF_DEFAULT_OPTS="--preview 'head -n 200 {}' --bind 'f3:toggle-preview'"
+    fi
 fi
 
-if command_exists bat; then
-    export FZF_DEFAULT_OPTS="--preview 'bat --style=numbers --color=always --line-range :500 {}' --bind 'f3:toggle-preview'"
-else
-    # Fallback FZF_DEFAULT_OPTS if bat is not available
-    export FZF_DEFAULT_OPTS="--preview 'head -n 200 {}' --bind 'f3:toggle-preview'"
-fi
-
-
-# shellcheck source=/dev/null
-[ -s "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
-
-# start ssh agent
-eval "$(ssh-agent)"
-
-# start starship
-eval "$(starship init bash)"
-
-# shellcheck source=/dev/null
-. "$HOME/.atuin/bin/env"
+# ── Extra prompt/history utilities ────────────────────────────────────────────
+command -v atuin >/dev/null && eval "$(atuin init bash --disable-up-arrow)" # Atuin history
+eval "$(starship init bash)"            # Starship prompt

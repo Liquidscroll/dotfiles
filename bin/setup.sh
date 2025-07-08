@@ -66,6 +66,8 @@ symlink_dotfiles "monokai_reference.json" "$(xdg_config_dir)/monokai_reference.j
 symlink_dotfiles "spotify-launcher.conf" "$(xdg_config_dir)/spotify-launcher.conf" 
 symlink_dotfiles "starship.toml" "$(xdg_config_dir)/starship.toml" 
 symlink_dotfiles ".bashrc" "$HOME/.bashrc" 
+symlink_dotfiles ".bash_profile" "$HOME/.bash_profile" 
+symlink_dotfiles ".profile" "$HOME/.profile" 
 symlink_dotfiles "scripts/archive_notes.sh" "$HOME/.local/bin/archive_notes.sh" 
 if [[ "$DRY_RUN" == true ]]; then
     info "(dry-run) Would create $(xdg_config_dir)/systemd/user/"

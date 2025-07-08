@@ -8,16 +8,26 @@
 ;(defvar half_bar_width "24px")  ;; Defines half the width of the bar (currently unused but kept for potential future use).
 (defvar audio_sink_icon "")    ;; Icon representing the current audio sink.
 (defvar audio_source_icon "")
+
+(defvar show_sys_details false)
+
 ;; Main Vertical Bar Structure
 (defwidget vbar [screen monitor]
-  (centerbox :orientation "v"
+  (box :orientation "h" :space-evenly false 
+  (revealer :visible "${show_sys_details && screen == 1}" :reveal show_sys_details :transition "slideleft"
+  (system_details))
+    (centerbox :orientation "v" :hexpand false
     (box :class "segment-top" :valign "start"
       (top_segment :screen screen :monitor monitor))
     (box :class "segment-middle" :valign "center"
       (middle_segment :screen screen))
-    (box :class "segment-bottom" :valign "end"
+    (box :class "segment-bottom" :valign "end" :hexpand false
       (bottom_segment :screen screen))
-  ))
+  )
+  )
+)
+
+
 
 ;; Top Segment Widgets
 (defwidget top_segment [screen monitor]
@@ -45,43 +55,73 @@
   ))
 
 (defwidget metric_group [?screen]
-    (box :orientation "v" :space-evenly true :spacing 3 :visible {screen == 1}
+    (box :valign "end" :orientation "v" :space-evenly false :spacing 3 :visible {screen == 1}
+        (children)
+    )
+)
+
+(defwidget temp_group [?screen]
+    (box :orientation "v" :space-evenly true :spacing 3 :visible {screen == 2}
         (children)
     )
 )
 
 ;; Bottom Segment Widgets
 (defwidget bottom_segment [screen]
-  (box :orientation "v" :valign "end" :space-evenly false :spacing "5"
-    (metric_group :screen screen
+  (box :orientation "v" :valign "end" :space-evenly false :spacing "3"
+    (metric_group :screen screen 
     (mic_widget)
     (volume_widget)
-    (box :orientation "h" :space-evenly true :class "metric-container"
-      (metric_widget :icon "" :font-size 1 ; Disk icon
-        "${round(EWW_DISK["/"].used_perc, 0)}%")
-      (metric_widget :icon "" :font-size 1 ; RAM icon
-        "${round(EWW_RAM.used_mem_perc, 0)}%"))
-    (box :orientation "h" :space-evenly true :class "metric-container"
-      (metric_widget :icon "󰻠" :font-size 1 ; CPU icon
-        "${round(EWW_CPU.avg, 0)}%")
-      (metric_widget :icon "󰘚" :font-size 1 ; GPU icon
-        "${gpu_poll}%"))
+    (eventbox :onclick "eww update show_sys_details=${show_sys_details == true ? false : true}"
+      (box :orientation "v" :space-evenly: true 
+        (box :orientation "h" :space-evenly true :class "metric-container"
+          (metric_widget :icon "" :font-size 1 ; Disk icon
+            :text "${round(EWW_DISK["/"].used_perc, 0)}%")
+          (metric_widget :icon "" :font-size 1 ; RAM icon
+            :text "${round(EWW_RAM.used_mem_perc, 0)}%"))
+        (box :orientation "h" :space-evenly true :class "metric-container"
+          (metric_widget :icon "󰻠" :font-size 1 ; CPU icon
+            :text "${round(EWW_CPU.avg, 0)}%")
+          (metric_widget :icon "󰘚" :font-size 1 ; GPU icon
+            :text "${gpu_poll}"))
+      )
+    ))
+    (temp_group :screen screen
+      (bottom_segment_temps)
     )
-      (date_widget))
+    (date_widget)
+  )
+)
+
+(defwidget bottom_segment_temps []
+  (eventbox :onclick "eww update show_sys_details=!show_sys_details"
+    (box :orientation "v" :space-evenly: true :class "metric-container"
+        (metric_widget :icon "󰻠" :font-size 1 ; CPU temp 
+          :style "color: ${cpu_temp_poll <= 20 ? '#81b023' :
+                           cpu_temp_poll <= 60 ? '#53a8bd' :
+                           cpu_temp_poll <= 80 ? '#c29661' : 'c72259'}"
+          :text "${cpu_temp_poll}󰔄")
+        (metric_widget :icon "󰘚" :font-size 1 ; GPU temp
+          :style "color: ${gpu_temp_poll <= 20 ? '#81b023' :
+                           gpu_temp_poll <= 60 ? '#53a8bd' :
+                           gpu_temp_poll <= 80 ? '#c29661' : 'c72259'}"
+          :text "${gpu_temp_poll}󰔄")
+    )
+  )
 )
 
 ;; Reusable Metric Widget
-(defwidget metric_widget [icon ?font-size]
+(defwidget metric_widget [icon text ?font-size]
   (box :orientation "v" :class "metric" :halign "center"
     (label :class "metric-icon"
            :style {font-size != "" ? "font-size: ${font-size}rem;" : ""}
            :text icon)
-    (children)))
+    (label :text text :limit-width 4)))
 
 ; CHECK THIS
 ;; Volume Control Widget
 (defwidget volume_widget []
-  (box :orientation "v" :class "volume-metric" :space-evenly false :valign "fill" :vexpand false
+  (box :orientation "v" :class "volume-metric" :space-evenly false :valign "end" :vexpand false
     ;; Volume slider
     (scale :orientation "h" :min 0 :max 101 :value current_volume_poll
            :onchange "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ $(echo {} | sed 's/\\..*//g')%")
@@ -103,7 +143,7 @@
           "${current_volume_poll}%")))))
 
 (defwidget mic_widget []
-  (box :orientation "v" :class "mic-metric" :space-evenly false :valign "fill" :vexpand false
+  (box :orientation "v" :class "mic-metric" :space-evenly false :valign "end" :vexpand false
     ;; Volume slider
     (scale :orientation "h" :min 0 :max 101 :value current_mic_poll
            :onchange "wpctl set-volume -l 1 @DEFAULT_AUDIO_SOURCE@ $(echo {} | sed 's/\\..*//g')%")
@@ -155,8 +195,52 @@
 (defpoll year_poll     :interval "1h"  "date +%y")
 
 ;; GPU Utilization Poller
-(defpoll gpu_poll :interval "1s"
-  "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits") 
+;(defpoll gpu_poll :interval "1s"
+;  "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | xargs printf '%3d'")
+(defpoll gpu_poll :interval "5s"
+  "printf '%d%%' $(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits)")
+(defpoll cpu_temp_poll :interval "5s" 
+  "sensors -j 2>/dev/null | jq -r '.\"k10temp-pci-00c3\".Tctl.temp1_input' | xargs printf \"%.1f\"")
+(defpoll gpu_temp_poll :interval "5s"  
+  "nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader | xargs printf \"%.1f\"")
+(defpoll cpu_fan_poll :interval "5s" 
+  "sensors 2>/dev/null | awk '/fan1:/ {gsub(\"RPM\", \"\", $2); print $2; exit; }'")
+(defpoll gpu_fan_poll :interval "5s" 
+  "nvidia-smi --query-gpu=fan.speed --format=csv,noheader,nounits")
+
+;; System Details Widget
+(defwidget system_details []
+  (box :orientation "v" :class "system-details-panel" :spacing 8
+    (box :orientation: "h" :valign "start" :vexpand false :space-evenly true :spacing 10 
+      (label :text "System Details" :halign "start")
+      (button :halign "end" :hexpand true :class "close-button" :onclick "eww update show_sys_details=false" "")
+    )
+      (box :orientation "v" :class "detail-circle"
+        (box :orientation "v"
+          (circular-progress :class "usage-circle" 
+          :value "${round(EWW_CPU.avg,0)}" :min 0 :max 100 :thickness 6 :size 64
+          :style "color: ${EWW_CPU.avg <= 20 ? '#66d9ef' : 
+                           EWW_CPU.avg <= 60 ? '#a6e22e' : 
+                           EWW_CPU.avg <= 80 ? '#f4bf75' : '#f92672'}"
+          (label :text "${round(EWW_CPU.avg,0)}%"))
+          (label :text "CPU" :class "circle-title"))
+        (box :orientation "h"
+          (label :text "${cpu_temp_poll}°C")
+          (label :text "${cpu_fan_poll} RPM" :class "circle-info")))
+      (box :orientation "v" :class "detail-circle"
+        (circular-progress :class "usage-circle" :value "${round(EWW_RAM.used_mem_perc,0)}" :min 0 :max 100 :thickness 6 :size 64
+          :style "color: ${EWW_RAM.used_mem_perc <= 20 ? '#66d9ef' : EWW_RAM.used_mem_perc <= 60 ? '#a6e22e' : EWW_RAM.used_mem_perc <= 80 ? '#f4bf75' : '#f92672'}"
+          (label :text "${round(EWW_RAM.used_mem_perc,0)}%"))
+        (label :text "RAM" :class "circle-title")
+        (label :text 
+  "${round((EWW_RAM.used_mem / (1024 * 1024 * 1024)), 1)}/${round((EWW_RAM.total_mem / (1024 * 1024 * 1024)), 1)} GiB" :class "circle-info"))
+      (box :orientation "v" :class "detail-circle"
+        (circular-progress :class "usage-circle" :value gpu_poll :min 0 :max 100 :thickness 6 :size 64
+          :style "color: ${gpu_poll <= 20 ? '#66d9ef' : gpu_poll <= 60 ? '#a6e22e' : gpu_poll <= 80 ? '#f4bf75' : '#f92672'}"
+          (label :text "${gpu_poll}%"))
+        (label :text "GPU" :class "circle-title")
+        (label :text "${gpu_temp_poll}°C | ${gpu_fan_poll}% (FAN)" :class "circle-info")))
+)
 
 ;; Window Definition
 (defwindow primary_bar
@@ -164,7 +248,7 @@
   :stacking "overlay"
   :geometry (geometry :x 0
                       :y 0
-                      :width "48px"
+                      :width "60px"
                       :height "100%"
                       :anchor "center right")
   :exclusive true
@@ -180,5 +264,6 @@
                         :height "100%"
                         :anchor "center left")
     :exclusive true
-    (vbar :screen 2 :monitor "HDMI-A-1")
+    (vbar :screen 2 :monitor "HDMI-A-1")  
 )
+

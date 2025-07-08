@@ -1,0 +1,7 @@
+[plugin]
+deps = []
+
+[[flavor.deps]]
+use = "Liquidscroll/prismatic-void"
+rev = "6f1472c"
+hash = "a056f5ef02008457f84d40e309338cb9"

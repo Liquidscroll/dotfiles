@@ -12,7 +12,7 @@ return {
       local monokai = require("monokai-pro")
       monokai.setup(opts)
       monokai.load()
-      vim.cmd.colorscheme "monokai-pro"
+      -- vim.cmd.colorscheme "monokai-pro"
       -- vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
       -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
     end,
@@ -24,5 +24,56 @@ return {
       render = 'virtual',
       virtual_symbol_position = 'inline',
     }
+  },
+  -- -- local plugin, in development
+  -- {
+  --   dir = '~/Projects/colour-scheme/prismatic-void/prismatic-void.nvim/',
+  --   name = 'prismatic-void',
+  --   priority = 1000,
+  --   config = function(_, opts)
+  --     local monokai = require("monokai-pro")
+  --     monokai.setup(opts)
+  --     monokai.load()
+  --     local pv = require("prismatic-void")
+  --     pv.setup(opts)
+  --     -- pv.load()
+  --
+  --     vim.api.nvim_create_user_command('TogglePrismaticVoid', function()
+  --       if vim.g.colors_name == 'prismatic-void' then
+  --         -- vim.cmd.colorscheme('monokai-pro')
+  --         monokai.load()
+  --       else
+  --         -- vim.cmd.colorscheme('prismatic-void')
+  --         pv.load()
+  --       end
+  --     end, {})
+  --
+  --     vim.keymap.set('n', '<leader>pc', '<cmd>TogglePrismaticVoid<CR>')
+  --   end,
+  -- },
+  {
+    dir = '~/Projects/colour-scheme/prismatic-void/pv-v2.nvim/',
+    name = 'prismatic-void',
+    priority = 1000,
+    config = function(_, opts)
+      local monokai = require("monokai-pro")
+      monokai.setup(opts)
+      monokai.load()
+      local pv = require("prismatic-void")
+      pv.setup(opts)
+      -- pv.load()
+
+      vim.api.nvim_create_user_command('TogglePrismaticVoid', function()
+        if vim.g.colors_name == 'prismatic-void' then
+          -- vim.cmd.colorscheme('monokai-pro')
+          monokai.load()
+        else
+          -- vim.cmd.colorscheme('prismatic-void')
+          pv.load()
+        end
+      end, {})
+
+      vim.keymap.set('n', '<leader>pc', '<cmd>TogglePrismaticVoid<CR>')
+    end,
   }
 }
